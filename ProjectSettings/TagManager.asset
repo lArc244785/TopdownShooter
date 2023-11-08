@@ -41,3 +41,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 1075001161
+    locked: 0
+  - name: Wall
+    uniqueID: 13802789
+    locked: 0
+  - name: Deco
+    uniqueID: 2430147829
+    locked: 0
+  - name: Actor
+    uniqueID: 386750355
+    locked: 0
+  - name: Prob
+    uniqueID: 2432086115
+    locked: 0
