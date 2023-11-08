@@ -57,7 +57,6 @@ namespace TopdownShooter.Pathfinders
 			Vector2 point = _origin;
 			bool isVisitable;
 
-			int wallLayer = LayerMask.NameToLayer("Wall");
 			int groundLayer = LayerMask.NameToLayer("Ground");
 
 			for (int i = 0; i < totalY; i++)

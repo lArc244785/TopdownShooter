@@ -27,6 +27,7 @@ namespace TopdownShooter.Pathfinders
 		public bool isVisitable { private set; get;}
 		public Node parent;
 
+
 		public int g;
 		public int h;
 		public int f => g + h;

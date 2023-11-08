@@ -24,7 +24,7 @@ namespace TopdownShooter.Pathfinders
 			UpLeft,
 		}
 
-		protected bool[,] closePathTable;
+		protected bool[,] openPathTable;
 
 		protected List<Node> visitNodeList;
 		[SerializeField] protected Map map;
@@ -45,6 +45,7 @@ namespace TopdownShooter.Pathfinders
 			new Node.Index(-1,1),
 		};
 
+		protected const int MOVE_DIR_LENGTH = 4;
 
 		protected virtual void Awake()
 		{
@@ -52,7 +53,7 @@ namespace TopdownShooter.Pathfinders
 				map.Init();
 
 			visitNodeList = new();
-			closePathTable = new bool[map.totalY, map.totalX];
+			openPathTable = new bool[map.totalY, map.totalX];
 			ResetPath();
 		}
 
@@ -64,7 +65,8 @@ namespace TopdownShooter.Pathfinders
 			{
 				for (int j = 0; j < map.totalX; j++)
 				{
-					closePathTable[i, j] = !map[i, j].isVisitable;
+					openPathTable[i, j] = map[i, j].isVisitable;
+
 				}
 			}
 		}
@@ -93,32 +95,43 @@ namespace TopdownShooter.Pathfinders
 			return true;
 		}
 
-		protected bool CanMoveStraight(Node.Index index,StraightMove dir)
+		/// <summary>
+		///  1. 노드가 존재하는가?, 노드가 방문이 가능한가?, 노드로 가는 경로가 열려있는가?
+		/// </summary>
+		private bool CanNodeMoveable(Node.Index index)
 		{
-			if(dir == StraightMove.None) return false;
-			Node.Index moveIndex = index + straightMoveDir[(int)dir];
-
-			return IsNodeExistence(moveIndex) && !closePathTable[moveIndex.y, moveIndex.x];
+			return IsNodeExistence(index) && map[index].isVisitable && openPathTable[index.y, index.x];
 		}
 
 
-		protected bool CanMoveDiagonal(Node.Index index, DiagonalMove dir)
+		protected bool CanMoveStraight(Node.Index currentIndex, StraightMove moveDir)
 		{
-			if (dir == DiagonalMove.None) return false;
-			Node.Index moveIndex = index + diagonalMoveDir[(int)dir];
+			if(moveDir == StraightMove.None) return false;
+			Node.Index moveIndex = currentIndex + straightMoveDir[(int)moveDir];
 
-			if(!IsNodeExistence(moveIndex) || closePathTable[moveIndex.y, moveIndex.x]) return false;
+			return CanNodeMoveable(moveIndex);
+		}
 
-			switch (dir)
+
+		protected bool CanMoveDiagonal(Node.Index currentIndex, DiagonalMove moveDir)
+		{
+			if (moveDir == DiagonalMove.None) return false;
+			Node.Index moveIndex = currentIndex + diagonalMoveDir[(int)moveDir];
+
+			if(!CanNodeMoveable(moveIndex)) return false;
+
+			//대각 이동시 주변 타일이 존재하고 주변 타일중에 벽이 없는 경우 그리고 해당 노드가 방문을 했던 노드가 아닌경우
+
+			switch (moveDir)
 			{
 				case DiagonalMove.UpRight:
 					{
 						Node.Index left = moveIndex + new Node.Index(-1, 0);
 						Node.Index down = moveIndex + new Node.Index(0, -1);
 
-						if(!IsNodeExistence(left) || closePathTable[left.y, left.x])
+						if(!CanNodeMoveable(left))
 							return false;
-						if(!IsNodeExistence(down) || closePathTable[down.y, down.x])
+						if(!CanNodeMoveable(down))
 							return false;
 					break;
 					}
@@ -127,9 +140,9 @@ namespace TopdownShooter.Pathfinders
 						Node.Index left = moveIndex + new Node.Index(-1, 0);
 						Node.Index up = moveIndex + new Node.Index(0, 1);
 
-						if (!IsNodeExistence(left) || closePathTable[left.y, left.x])
+						if (!CanNodeMoveable(left))
 							return false;
-						if (!IsNodeExistence(up) || closePathTable[up.y, up.x])
+						if (!CanNodeMoveable(up))
 							return false;
 					break;
 					}
@@ -138,9 +151,9 @@ namespace TopdownShooter.Pathfinders
 						Node.Index right = moveIndex + new Node.Index(1, 0);
 						Node.Index up = moveIndex + new Node.Index(0, 1);
 
-						if (!IsNodeExistence(right) || closePathTable[right.y, right.x])
+						if (!CanNodeMoveable(right))
 							return false;
-						if (!IsNodeExistence(up) || closePathTable[up.y, up.x])
+						if (!CanNodeMoveable(up))
 							return false;
 						break;
 					}
@@ -149,9 +162,9 @@ namespace TopdownShooter.Pathfinders
 						Node.Index right = moveIndex + new Node.Index(1, 0);
 						Node.Index down = moveIndex + new Node.Index(0, -1);
 
-						if (!IsNodeExistence(right) || closePathTable[right.y, right.x])
+						if (!CanNodeMoveable(right))
 							return false;
-						if (!IsNodeExistence(down) || closePathTable[down.y, down.x])
+						if (!CanNodeMoveable(down))
 							return false;
 						break;
 					}

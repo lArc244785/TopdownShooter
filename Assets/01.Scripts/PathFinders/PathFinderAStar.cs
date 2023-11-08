@@ -76,21 +76,25 @@ namespace TopdownShooter.Pathfinders
 			PriorityQueue<Node> openPath = new PriorityQueue<Node>();
 			int h = CalculationManhattanDistance(startNode.index, targetNode.index);
 			Node startAStarNode = new Node(startNode.position, startNode.index, startNode.isVisitable, 0, h);
+			
+			visitNodeList.Add(startAStarNode);
+			openPathTable[startAStarNode.index.y, startAStarNode.index.x] = false;
+
 			openPath.Enqueue(startAStarNode, startAStarNode.f);
-			bool isFound = false;
+			bool isPathFound = false;
 
 			Node endNode = null;
-			while (openPath.Count > 0 && !isFound)
+			while (openPath.Count > 0 && !isPathFound)
 			{
 				Node node = openPath.Dequeue();
-				isFound = node.index == targetNode.index;
-				if (!isFound)
+				isPathFound = node.index == targetNode.index;
+				if (!isPathFound)
 					UpdateMoveablePaths(in openPath, node, targetNode);
 				else
 					endNode = node;
 			}
 
-			if (!isFound)
+			if (!isPathFound)
 				return false;
 
 			Node pathNode = endNode;
@@ -124,7 +128,7 @@ namespace TopdownShooter.Pathfinders
 					visitNode.h = CalculationManhattanDistance(visitNode.index, targetNode.index);
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
-					closePathTable[visitNode.index.y, visitNode.index.x] = true;
+					openPathTable[visitNode.index.y, visitNode.index.x] = false;
 					openPath.Enqueue(visitNode, visitNode.f);
 				}
 			}
@@ -141,7 +145,7 @@ namespace TopdownShooter.Pathfinders
 					visitNode.h = CalculationManhattanDistance(visitNode.index, targetNode.index);
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
-					closePathTable[visitNode.index.y, visitNode.index.x] = true;
+					openPathTable[visitNode.index.y, visitNode.index.x] = false;
 					openPath.Enqueue(visitNode, visitNode.f);
 				}
 			}

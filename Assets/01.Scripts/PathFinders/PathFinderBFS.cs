@@ -20,10 +20,13 @@ namespace TopdownShooter.Pathfinders
 
 			Queue<Node> openPath = new Queue<Node>();
 			openPath.Enqueue(startNode);
-			closePathTable[startNode.index.y, startNode.index.x] = true;
-			bool isFound = false;
 
+			visitNodeList.Add(startNode);
+			openPathTable[startNode.index.y, startNode.index.x] = false;
+			
+			bool isFound = false;
 			Node endNode = null;
+			
 			while (openPath.Count > 0 && !isFound)
 			{
 				Node node = openPath.Dequeue();
@@ -56,35 +59,31 @@ namespace TopdownShooter.Pathfinders
 		{
 			Node.Index point = currentNode.index;
 
-
-
-			//직선 이동 가능 경로 확인
-			for (int i = 0; i < straightMoveDir.Length; i++)
+			for (int i = 0; i < MOVE_DIR_LENGTH; i++)
 			{
+				//직선 이동 가능 경로 추가
 				if (CanMoveStraight(point, (StraightMove)i))
 				{
 					Node.Index nextIndex = point + straightMoveDir[i];
 					Node visitNode = map[nextIndex].GetClone();
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
-					closePathTable[nextIndex.y, nextIndex.x] = true;
+					openPathTable[nextIndex.y, nextIndex.x] = false;
 					openPath.Enqueue(visitNode);
 				}
-			}
 
-			//대각 이동 가능 경로 확인
-			for (int i = 0; i < diagonalMoveDir.Length; i++)
-			{
+				//대각 이동 가능 경로 추가
 				if (CanMoveDiagonal(point, (DiagonalMove)i))
 				{
 					Node.Index nextIndex = point + diagonalMoveDir[i];
 					Node visitNode = map[nextIndex].GetClone();
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
-					closePathTable[nextIndex.y, nextIndex.x] = true;
+					openPathTable[nextIndex.y, nextIndex.x] = false;
 					openPath.Enqueue(visitNode);
 				}
 			}
+
 
 
 		}

@@ -20,10 +20,13 @@ namespace TopdownShooter.Pathfinders
 
 			Stack<Node> openPath = new Stack<Node>();
 			openPath.Push(startNode);
-			closePathTable[startNode.index.y, startNode.index.x] = true;
 			bool isFound = false;
-
 			Node endNode = null;
+
+
+			visitNodeList.Add(startNode);
+			openPathTable[startNode.index.y, startNode.index.x] = false;
+			
 			while (openPath.Count > 0 && !isFound)
 			{
 				Node node = openPath.Pop();
@@ -42,7 +45,7 @@ namespace TopdownShooter.Pathfinders
 
 			while (pathNode != null)
 			{
-				pathList.Add(pathNode.position);
+				pathList.Add(pathNode.position);	
 				pathNode = pathNode.parent;
 			}
 
@@ -57,8 +60,7 @@ namespace TopdownShooter.Pathfinders
 			Node.Index point = currentNode.index;
 			string addPath = null;
 
-			//대각 이동 가능 경로 확인
-			for (int i = diagonalMoveDir.Length - 1; i >= 0; i--)
+			for (int i = MOVE_DIR_LENGTH - 1; i >= 0; i--)
 			{
 				if (CanMoveDiagonal(point, (DiagonalMove)i))
 				{
@@ -66,30 +68,22 @@ namespace TopdownShooter.Pathfinders
 					Node visitNode = map[nextIndex].GetClone();
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
-					closePathTable[nextIndex.y, nextIndex.x] = true;
+					openPathTable[nextIndex.y, nextIndex.x] = false;
 					openPath.Push(visitNode);
 					addPath += $"({visitNode.index.x} , {visitNode.index.y})\n";
 				}
-			}
 
-
-			//직선 이동 가능 경로 확인
-			for (int i = straightMoveDir.Length - 1; i >= 0; i--)
-			{
 				if (CanMoveStraight(point, (StraightMove)i))
 				{
 					Node.Index nextIndex = point + straightMoveDir[i];
 					Node visitNode = map[nextIndex].GetClone();
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
-					closePathTable[nextIndex.y, nextIndex.x] = true;
+					openPathTable[nextIndex.y, nextIndex.x] = false;
 					openPath.Push(visitNode);
 					addPath += $"({visitNode.index.x} , {visitNode.index.y})\n";
 				}
 			}
-
-
-
 
 			Debug.Log($"현재 노드 ({currentNode.index.x},{currentNode.index.y})\n 추가된 노드들\n" + addPath);
 
