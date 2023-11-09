@@ -21,9 +21,24 @@ namespace TopdownShooter.Pathfinders
 		public Node this[Node.Index index] => _map[index.y, index.x];
 		public Node this[int y, int x] => _map[y, x];
 
-		public bool isInit {get; private set; } = false;
-
 		private Vector2 _bottomLeft;
+
+		private static Map _instance;
+		public static Map Instance
+		{
+			get
+			{
+				if (_instance == null)
+					throw new System.Exception("Map is not Instance");
+				return _instance;
+			}
+			set
+			{
+				if (_instance != null)
+					throw new System.Exception($"Map is exist {_instance.gameObject.name}");
+				_instance = value;
+			}
+		}
 
 		private void Awake()
 		{
@@ -34,7 +49,7 @@ namespace TopdownShooter.Pathfinders
 		{
 			_grid = GetComponent<Grid>();
 			SetUp();
-			isInit = true;
+			Instance = this;
 		}
 
 		private void SetUp()

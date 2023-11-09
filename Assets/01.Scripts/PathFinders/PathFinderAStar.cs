@@ -7,53 +7,72 @@ namespace TopdownShooter.Pathfinders
 {
 	public class PathfFinderAStar : PathFinder
 	{
-		class PriorityQueue<T>
+		public class PriorityQueue<T> where T : IComparable<T>
 		{
-			private SortedSet<PriorityQueueNode<T>> set = new SortedSet<PriorityQueueNode<T>>();
+			private List<T> heap = new List<T>();
 
-			public void Enqueue(T item, int priority)
+			public void Enqueue(T item)
 			{
-				set.Add(new PriorityQueueNode<T>(item, priority));
+				heap.Add(item);
+				int currentIndex = heap.Count - 1;
+
+				while (currentIndex > 0)
+				{
+					int parentIndex = (currentIndex - 1) / 2;
+
+					if (heap[currentIndex].CompareTo(heap[parentIndex]) >= 0)
+						break;
+
+					Swap(currentIndex, parentIndex);
+					currentIndex = parentIndex;
+				}
 			}
 
 			public T Dequeue()
 			{
-				if (set.Count == 0)
-					throw new InvalidOperationException("Priority queue is empty.");
+				if (heap.Count == 0)
+					throw new InvalidOperationException("Queue is empty");
 
-				var first = set.Min;
-				set.Remove(first);
-				return first.Value;
-			}
+				T frontItem = heap[0];
+				int lastIndex = heap.Count - 1;
+				heap[0] = heap[lastIndex];
+				heap.RemoveAt(lastIndex);
 
-			public bool IsEmpty()
-			{
-				return set.Count == 0;
+				int currentIndex = 0;
+
+				while (true)
+				{
+					int leftChildIndex = currentIndex * 2 + 1;
+					int rightChildIndex = currentIndex * 2 + 2;
+
+					if (leftChildIndex >= lastIndex)
+						break;
+
+					int minIndex = leftChildIndex;
+
+					if (rightChildIndex < lastIndex && heap[rightChildIndex].CompareTo(heap[leftChildIndex]) < 0)
+						minIndex = rightChildIndex;
+
+					if (heap[currentIndex].CompareTo(heap[minIndex]) <= 0)
+						break;
+
+					Swap(currentIndex, minIndex);
+					currentIndex = minIndex;
+				}
+
+				return frontItem;
 			}
 
 			public int Count
 			{
-				get { return set.Count; }
-			}
-		}
-
-		class PriorityQueueNode<T> : IComparable<PriorityQueueNode<T>>
-		{
-			public T Value { get; private set; }
-			public int Priority { get; private set; }
-
-			public PriorityQueueNode(T value, int priority)
-			{
-				Value = value;
-				Priority = priority;
+				get { return heap.Count; }
 			}
 
-			public int CompareTo(PriorityQueueNode<T> other)
+			private void Swap(int i, int j)
 			{
-				if (other == null)
-					return 1;
-
-				return Priority.CompareTo(other.Priority);
+				T temp = heap[i];
+				heap[i] = heap[j];
+				heap[j] = temp;
 			}
 		}
 
@@ -70,9 +89,9 @@ namespace TopdownShooter.Pathfinders
 			Node startNode = null;
 			Node targetNode = null;
 
-			if (!map.TryGetNode(startPos, out startNode) || !map.TryGetNode(targetPos, out targetNode))
+			if (!Map.Instance.TryGetNode(startPos, out startNode) || !Map.Instance.TryGetNode(targetPos, out targetNode))
 				return false;
-
+			
 			PriorityQueue<Node> openPath = new PriorityQueue<Node>();
 			int h = CalculationManhattanDistance(startNode.index, targetNode.index);
 			Node startAStarNode = new Node(startNode.position, startNode.index, startNode.isVisitable, 0, h);
@@ -80,7 +99,7 @@ namespace TopdownShooter.Pathfinders
 			visitNodeList.Add(startAStarNode);
 			openPathTable[startAStarNode.index.y, startAStarNode.index.x] = false;
 
-			openPath.Enqueue(startAStarNode, startAStarNode.f);
+			openPath.Enqueue(startAStarNode);
 			bool isPathFound = false;
 
 			Node endNode = null;
@@ -122,14 +141,14 @@ namespace TopdownShooter.Pathfinders
 				if (CanMoveDiagonal(point, (DiagonalMove)i))
 				{
 					Node.Index nextIndex = point + diagonalMoveDir[i];
-					Node visitNode = map[nextIndex].GetClone();
+					Node visitNode = Map.Instance[nextIndex].GetClone();
 					int g = visitNode.parent != null ? visitNode.parent.g + _diagonalCost : _diagonalCost;
 					visitNode.g = g;
 					visitNode.h = CalculationManhattanDistance(visitNode.index, targetNode.index);
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
 					openPathTable[visitNode.index.y, visitNode.index.x] = false;
-					openPath.Enqueue(visitNode, visitNode.f);
+					openPath.Enqueue(visitNode);
 				}
 			}
 
@@ -139,14 +158,14 @@ namespace TopdownShooter.Pathfinders
 				if (CanMoveStraight(point, (StraightMove)i))
 				{
 					Node.Index nextIndex = point + straightMoveDir[i];
-					Node visitNode = map[nextIndex].GetClone();
+					Node visitNode = Map.Instance[nextIndex].GetClone();
 					int g = visitNode.parent != null ? visitNode.parent.g + _straightCost : _straightCost;
 					visitNode.g = g;
 					visitNode.h = CalculationManhattanDistance(visitNode.index, targetNode.index);
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
 					openPathTable[visitNode.index.y, visitNode.index.x] = false;
-					openPath.Enqueue(visitNode, visitNode.f);
+					openPath.Enqueue(visitNode);
 				}
 			}
 

@@ -11,10 +11,14 @@ public class TestPathFinder : MonoBehaviour
 
 	private Vector2[] _paths;
 
-	private void Start()
+
+	private void Update()
 	{
-		_pathFinder.TryGetPath(_startPos.position, _endPos.position, out _paths);
+		if(Input.GetKeyDown(KeyCode.Q))
+			_pathFinder.TryGetPath(_startPos.position, _endPos.position, out _paths);
+
 	}
+
 
 	private void OnDrawGizmos()
 	{

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace TopdownShooter.Pathfinders
 {
 	[Serializable]
-	public class Node
+	public class Node : IComparable<Node>
 	{
 		[Serializable]
 		public struct Index
@@ -45,6 +45,20 @@ namespace TopdownShooter.Pathfinders
 		public Node GetClone()
 		{
 			return new Node(position, index, isVisitable, g,h,parent);
-		} 
+		}
+
+		public int CompareTo(Node other)
+		{
+			if(other == null)
+				return 1;
+
+			if (f == other.f)
+				return 0;
+
+			if (f > other.f)
+				return 1;
+
+			return -1;
+		}
 	}
 }

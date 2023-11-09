@@ -27,7 +27,6 @@ namespace TopdownShooter.Pathfinders
 		protected bool[,] openPathTable;
 
 		protected List<Node> visitNodeList;
-		[SerializeField] protected Map map;
 
 		protected Node.Index[] straightMoveDir =
 		{
@@ -47,26 +46,22 @@ namespace TopdownShooter.Pathfinders
 
 		protected const int MOVE_DIR_LENGTH = 4;
 
-		protected virtual void Awake()
-		{
-			if (!map.isInit)
-				map.Init();
 
+		protected virtual void Start()
+		{
 			visitNodeList = new();
-			openPathTable = new bool[map.totalY, map.totalX];
-			ResetPath();
+			openPathTable = new bool[Map.Instance.totalY, Map.Instance.totalX];
 		}
 
 		public void ResetPath()
 		{
 			visitNodeList.Clear();
 
-			for (int i = 0; i < map.totalY; i++)
+			for (int i = 0; i < Map.Instance.totalY; i++)
 			{
-				for (int j = 0; j < map.totalX; j++)
+				for (int j = 0; j < Map.Instance.totalX; j++)
 				{
-					openPathTable[i, j] = map[i, j].isVisitable;
-
+					openPathTable[i, j] = Map.Instance[i, j].isVisitable;
 				}
 			}
 		}
@@ -89,8 +84,8 @@ namespace TopdownShooter.Pathfinders
 
 		private bool IsNodeExistence(Node.Index index)
 		{
-			if (index.x < 0 || index.x >= map.totalX) return false;
-			if (index.y < 0 || index.y >= map.totalY) return false;
+			if (index.x < 0 || index.x >= Map.Instance.totalX) return false;
+			if (index.y < 0 || index.y >= Map.Instance.totalY) return false;
 
 			return true;
 		}
@@ -100,7 +95,7 @@ namespace TopdownShooter.Pathfinders
 		/// </summary>
 		private bool CanNodeMoveable(Node.Index index)
 		{
-			return IsNodeExistence(index) && map[index].isVisitable && openPathTable[index.y, index.x];
+			return IsNodeExistence(index) && Map.Instance[index].isVisitable && openPathTable[index.y, index.x];
 		}
 
 

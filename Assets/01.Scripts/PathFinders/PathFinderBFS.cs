@@ -15,7 +15,7 @@ namespace TopdownShooter.Pathfinders
 			Node startNode = null;
 			Node targetNode = null;
 
-			if (!map.TryGetNode(startPos, out startNode) || !map.TryGetNode(targetPos, out targetNode))
+			if (!Map.Instance.TryGetNode(startPos, out startNode) || !Map.Instance.TryGetNode(targetPos, out targetNode))
 				return false;
 
 			Queue<Node> openPath = new Queue<Node>();
@@ -65,7 +65,7 @@ namespace TopdownShooter.Pathfinders
 				if (CanMoveStraight(point, (StraightMove)i))
 				{
 					Node.Index nextIndex = point + straightMoveDir[i];
-					Node visitNode = map[nextIndex].GetClone();
+					Node visitNode = Map.Instance[nextIndex].GetClone();
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
 					openPathTable[nextIndex.y, nextIndex.x] = false;
@@ -76,7 +76,7 @@ namespace TopdownShooter.Pathfinders
 				if (CanMoveDiagonal(point, (DiagonalMove)i))
 				{
 					Node.Index nextIndex = point + diagonalMoveDir[i];
-					Node visitNode = map[nextIndex].GetClone();
+					Node visitNode = Map.Instance[nextIndex].GetClone();
 					visitNode.parent = currentNode;
 					visitNodeList.Add(visitNode);
 					openPathTable[nextIndex.y, nextIndex.x] = false;
