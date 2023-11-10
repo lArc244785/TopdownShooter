@@ -24,6 +24,8 @@ namespace TopdownShooter.Weapons
 		[SerializeField] private float _minDamage;
 		[SerializeField] private float _maxDamage;
 
+		public SpriteRenderer renderer { private set; get; }
+
 		public bool isUseAmmo;
 
 		protected CharacterController owner;
@@ -85,6 +87,10 @@ namespace TopdownShooter.Weapons
 		public int minAmmo => 0;
 		#endregion
 
+		private void Awake()
+		{
+			renderer = GetComponentInChildren<SpriteRenderer>();
+		}
 
 		public virtual void Init(CharacterController owner, LayerMask targetMask)
 		{
