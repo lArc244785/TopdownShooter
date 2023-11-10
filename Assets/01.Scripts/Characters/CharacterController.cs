@@ -1,4 +1,6 @@
 using System;
+using TopdownShooter.FSM;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace TopdownShooter.Characters
@@ -23,7 +25,7 @@ namespace TopdownShooter.Characters
 			get { return _lookDirection; }
 		}
 
-		private Vector2 _move;
+		public Vector2 move { get; private set; }
 		public Rigidbody2D rigidbody2D { private set; get; }
 
 		public event Action<float> onHpChanged;
@@ -32,8 +34,7 @@ namespace TopdownShooter.Characters
 		public event Action onHpMax;
 		public event Action onHpMin;
 
-		public bool invincible { get => _invincible; set => _invincible = value; }
-		private bool _invincible;
+		public bool invincible { get; set; }
 
 		public float hpValue
 		{
@@ -63,17 +64,27 @@ namespace TopdownShooter.Characters
 
 		private float _hpValue;
 
+		public Animator animator { get; private set; }
+
+		protected CharacterMachine machine;
 
 		protected virtual void Awake()
 		{
 			rigidbody2D = GetComponent<Rigidbody2D>();
+			animator = GetComponentInChildren<Animator>();
 			_hpValue = _maxHp;
 		}
+
+		protected virtual void Update()
+		{
+			machine.OnStateUpdate();
+		}
+
 
 		protected virtual void FixedUpdate()
 		{
 			Move();
-			Roation();
+			HandRotaion();
 		}
 
 		private void Move()
@@ -81,16 +92,16 @@ namespace TopdownShooter.Characters
 			if (!isMoveable)
 				return;
 
-			_move = new Vector2(horizontal, vertical) * speed * Time.fixedDeltaTime;
-			rigidbody2D.transform.position += (Vector3)_move;
+			move = new Vector2(horizontal, vertical) * speed * Time.fixedDeltaTime;
+			rigidbody2D.transform.position += (Vector3)move;
 		}
 
-		private void Roation()
+		private void HandRotaion()
 		{
 			if(!isLookable)
 				return;
-			float radTheta = Mathf.Atan2(_lookDirection.y, _lookDirection.x);
-			transform.rotation = Quaternion.Euler(0, 0, radTheta * Mathf.Rad2Deg);
+
+			
 		}
 
 		public virtual void RecoverHp(object subject, float amount)

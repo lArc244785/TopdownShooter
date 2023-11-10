@@ -57,7 +57,10 @@ namespace TopdownShooter.Weapons
 		#endregion
 
 		#region ammo
-		private int _ammoValue;
+		[SerializeField] private int _maxAmmo;
+		public int maxAmmo => _maxAmmo;
+
+		[SerializeField] private int _ammoValue;
 		public int ammoValue
 		{
 			get
@@ -67,7 +70,7 @@ namespace TopdownShooter.Weapons
 			set
 			{
 				if (value != _ammoValue)
-					onChangeAmmo(value);
+					onChangeAmmo?.Invoke(value);
 
 				_ammoValue = Mathf.Clamp(value, minAmmo, maxAmmo);
 
@@ -78,10 +81,6 @@ namespace TopdownShooter.Weapons
 
 			}
 		}
-
-		[SerializeField] private int _maxAmmo;
-
-		public int maxAmmo => _maxAmmo;
 
 		public int minAmmo => 0;
 		#endregion
@@ -102,8 +101,12 @@ namespace TopdownShooter.Weapons
 
 		public void UseAmmo(int amount)
 		{
-			if(!isUseAmmo)
+			if (isUseAmmo)
+			{
 				ammoValue -= amount;
+				if (ammoValue == minAmmo)
+					weaponState = WeaponState.AmmoEmpty;
+			}
 			onUseAmmo?.Invoke(amount);
 		}
 

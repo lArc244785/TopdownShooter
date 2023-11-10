@@ -15,6 +15,7 @@ namespace TopdownShooter.Characters
 			MouseLook();
 			Attack();
 			Reload();
+			WeaponChange();
 		}
 
 		private void Move()
@@ -25,7 +26,7 @@ namespace TopdownShooter.Characters
 
 		private void MouseLook()
 		{
-			Vector2 characterToMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+			Vector2 characterToMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint(_weaponController.handPivot.position);
 			characterToMousePos.Normalize();
 
 			_characterController.lookDirection = characterToMousePos;
@@ -33,14 +34,22 @@ namespace TopdownShooter.Characters
 
 		private void Attack()
 		{
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButton(0))
 				_weaponController?.Attack();
 		}
 
 		private void Reload()
 		{
-			//if (Input.GetKeyDown(KeyCode.R))
-			//	//_weaponController?.Reload();
+			if (Input.GetKeyDown(KeyCode.R))
+				_weaponController?.ReLoad();
+		}
+
+		private void WeaponChange()
+		{
+			if (Input.GetKeyDown(KeyCode.Alpha1))
+				_weaponController?.ChangeWeapon(0);
+			if (Input.GetKeyDown(KeyCode.Alpha2))
+				_weaponController?.ChangeWeapon(1);
 		}
 	}
 
