@@ -11,7 +11,6 @@ namespace TopdownShooter.Characters
 		{
 			base.Awake();
 			machine = new PlayerMachine(this);
-			machine.Init(CharacterDataShet.GetPlayerData(machine));
 		}
 	}
 }

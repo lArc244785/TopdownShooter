@@ -12,7 +12,7 @@ namespace TopdownShooter.FSM
 
 		public override CharacterStateID id => CharacterStateID.Hurt;
 
-		public override bool canExecute => true;
+		public override bool canExecute => !controller.invincible && controller.hpValue > controller.minHp;
 
 		public override void OnStateEnter()
 		{
@@ -25,6 +25,9 @@ namespace TopdownShooter.FSM
 			var nextID = base.OnStateUpdate();
 			if (nextID == CharacterStateID.None)
 				nextID =  id;
+
+			if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+				nextID = CharacterStateID.Idle;
 
 			return nextID;
 		}

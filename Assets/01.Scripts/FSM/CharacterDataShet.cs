@@ -17,6 +17,15 @@ namespace TopdownShooter.FSM
 				{ CharacterStateID.Hurt, new CharacterFsmHurt(machine)},
 				{ CharacterStateID.Die, new CharacterFsmDie(machine)}
 			};
+		}		
+		public static IDictionary<CharacterStateID, IState<CharacterStateID>> GetEnemyData(CharacterMachine machine)
+		{
+			return new Dictionary<CharacterStateID, IState<CharacterStateID>>() {
+				{ CharacterStateID.Idle, new CharacterFsmIdle(machine)},
+				{ CharacterStateID.Move, new CharacterFsmMove(machine)},
+				{ CharacterStateID.Hurt, new CharacterFsmHurt(machine)},
+				{ CharacterStateID.Die, new CharacterFsmDie(machine)}
+			};
 		}
 
 	}

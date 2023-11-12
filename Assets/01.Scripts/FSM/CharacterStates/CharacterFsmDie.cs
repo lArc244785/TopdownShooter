@@ -26,6 +26,9 @@ namespace TopdownShooter.FSM
 			if (nextID == CharacterStateID.None)
 				nextID =  id;
 
+			if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+				controller.OnDead();
+
 			return nextID;
 		}
 

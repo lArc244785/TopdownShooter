@@ -86,8 +86,6 @@ namespace TopdownShooter.Weapons
 			float theta = Mathf.Atan2(_owner.lookDirection.y, _owner.lookDirection.x) * Mathf.Rad2Deg;
 			handPivot.rotation = Quaternion.Euler(0, 0, theta);
 			_currentWeapon.renderer.flipY = (theta >= 90.0f && theta <= 180.0f) || (theta <= -90.0f && theta >= -180.0f) ? true : false;
-
-			Debug.Log($"{theta}, {theta * Mathf.Rad2Deg}");
 		}
 
 	}

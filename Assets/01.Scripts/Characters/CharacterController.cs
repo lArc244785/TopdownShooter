@@ -9,9 +9,10 @@ namespace TopdownShooter.Characters
 	{
 		[field:SerializeField]
 		public float horizontal { set; get; }
+		[field: SerializeField]
 		public float vertical { set; get; }
 
-		[SerializeField] private float speed;
+		[SerializeField] protected float speed;
 
 		#region Flags
 		public bool isMoveable;
@@ -25,7 +26,7 @@ namespace TopdownShooter.Characters
 			get { return _lookDirection; }
 		}
 
-		public Vector2 move { get; private set; }
+		public Vector2 move { get; protected set; }
 		public Rigidbody2D rigidbody2D { private set; get; }
 
 		public event Action<float> onHpChanged;
@@ -33,6 +34,7 @@ namespace TopdownShooter.Characters
 		public event Action<float> onHpDelete;
 		public event Action onHpMax;
 		public event Action onHpMin;
+		public event Action onDead;
 
 		public bool invincible { get; set; }
 
@@ -67,12 +69,21 @@ namespace TopdownShooter.Characters
 		public Animator animator { get; private set; }
 
 		protected CharacterMachine machine;
+		private SpriteRenderer _renderer;
 
 		protected virtual void Awake()
 		{
 			rigidbody2D = GetComponent<Rigidbody2D>();
 			animator = GetComponentInChildren<Animator>();
+			_renderer = animator.GetComponent<SpriteRenderer>();
 			_hpValue = _maxHp;
+		}
+
+		protected virtual void Start()
+		{
+			onHpMin += () => machine.ChangeState(CharacterStateID.Die);
+			onHpDelete += (value) => machine.ChangeState(CharacterStateID.Hurt);
+			onDead += () => this.enabled = false;
 		}
 
 		protected virtual void Update()
@@ -84,10 +95,10 @@ namespace TopdownShooter.Characters
 		protected virtual void FixedUpdate()
 		{
 			Move();
-			HandRotaion();
+			Look();
 		}
 
-		private void Move()
+		protected virtual void Move()
 		{
 			if (!isMoveable)
 				return;
@@ -96,12 +107,15 @@ namespace TopdownShooter.Characters
 			rigidbody2D.transform.position += (Vector3)move;
 		}
 
-		private void HandRotaion()
+		private void Look()
 		{
 			if(!isLookable)
 				return;
 
-			
+			if (horizontal > 0.0f)
+				_renderer.flipX = false;
+			else if (horizontal < 0.0f)
+				_renderer.flipX = true;
 		}
 
 		public virtual void RecoverHp(object subject, float amount)
@@ -114,6 +128,11 @@ namespace TopdownShooter.Characters
 		{
 			hpValue -= amount;
 			onHpDelete?.Invoke(amount);
+		}
+
+		public void OnDead()
+		{
+			onDead?.Invoke();
 		}
 	}
 
