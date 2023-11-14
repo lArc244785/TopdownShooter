@@ -1,7 +1,9 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using UnityEngine;
 
 namespace TopdownShooter.FSM
 {
@@ -21,14 +23,13 @@ namespace TopdownShooter.FSM
 
 		public bool ChangeState(T newState)
 		{
-			_states[_currentID].OnStateExit();
-
 			if (Comparer<T>.Default.Compare(_currentID, newState) == 0)
 				return false;
 
 			if (!_states[newState].canExecute)
 				return false;
 
+			_states[_currentID].OnStateExit();
 			_currentID = newState;
 			_states[_currentID].OnStateEnter();
 			return true;

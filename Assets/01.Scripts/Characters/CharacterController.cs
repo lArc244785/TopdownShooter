@@ -7,7 +7,7 @@ namespace TopdownShooter.Characters
 {
 	public class CharacterController : MonoBehaviour , IHP
 	{
-		[field: SerializeField]
+		
 		public float horizontal
 		{
 			get
@@ -24,7 +24,7 @@ namespace TopdownShooter.Characters
 			}
 		}
 
-
+		[SerializeField]
 		private float _horizontal;
 
 		[field: SerializeField]
@@ -54,7 +54,7 @@ namespace TopdownShooter.Characters
 		public event Action onHpMin;
 		public event Action onDead;
 
-		public bool invincible { get; set; }
+		public bool invincible { get; set; } = false;
 
 		public float hpValue
 		{
@@ -101,7 +101,7 @@ namespace TopdownShooter.Characters
 		{
 			onHpMin += () => machine.ChangeState(CharacterStateID.Die);
 			onHpDelete += (value) => machine.ChangeState(CharacterStateID.Hurt);
-			onDead += () => this.enabled = false;
+			onDead += () => gameObject.SetActive(false);
 		}
 
 		protected virtual void Update()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace TopdownShooter.FSM
 {
@@ -28,6 +29,7 @@ namespace TopdownShooter.FSM
 
 			if (controller.move.sqrMagnitude > 0.0f)
 				nextID = CharacterStateID.Move;
+
 
 			return nextID;
 		}

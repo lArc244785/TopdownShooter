@@ -12,7 +12,7 @@ namespace TopdownShooter.FSM
 
 		public override CharacterStateID id => CharacterStateID.Move;
 
-		public override bool canExecute => true;
+		public override bool canExecute => controller.isMoveable;
 
 		public override void OnStateEnter()
 		{

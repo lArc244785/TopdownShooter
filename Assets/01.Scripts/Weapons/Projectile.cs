@@ -47,6 +47,7 @@ namespace TopdownShooter.Weapons
 				{
 					if (hit.TryGetComponent<IHP>(out var hp))
 					{
+						Debug.Log($"Hit Owner{_owner.gameObject.name}");
 						hp.DeleteHp(_owner, _damage);
 					}
 				}
