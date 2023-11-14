@@ -10,13 +10,13 @@ namespace TopdownShooter.Weapons
 		[SerializeField] Projectile _projectile;
 		[SerializeField] private Transform _firePoint;
 
-		public override void Attack()
+		public override void Attack(Vector2 attackDiraction)
 		{
-			base.Attack();
+			base.Attack(attackDiraction);
 
 			var bullet = Instantiate(_projectile);
 			bullet.transform.position = _firePoint.position;
-			bullet.Init(owner, damage, targetMask);
+			bullet.Init(owner, attackDiraction, damage, targetMask);
 
 			UseAmmo(1);
 		}

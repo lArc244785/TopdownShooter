@@ -30,7 +30,7 @@ namespace TopdownShooter.FSM
 			this.machine = machine;
 			controller = machine.owner;
 			transform = controller.transform;
-			rigidbody2D = controller.rigidbody2D;
+			rigidbody2D = controller.rig2D;
 			animator = controller.animator;
 		}
 

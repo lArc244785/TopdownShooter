@@ -7,8 +7,26 @@ namespace TopdownShooter.Characters
 {
 	public class CharacterController : MonoBehaviour , IHP
 	{
-		[field:SerializeField]
-		public float horizontal { set; get; }
+		[field: SerializeField]
+		public float horizontal
+		{
+			get
+			{
+				return _horizontal;
+			}
+
+			set
+			{
+				if (Mathf.Abs(value) > 0.0f)
+					LookUpdate(value);
+
+				_horizontal = value;
+			}
+		}
+
+
+		private float _horizontal;
+
 		[field: SerializeField]
 		public float vertical { set; get; }
 
@@ -19,15 +37,15 @@ namespace TopdownShooter.Characters
 		public bool isLookable;
 		#endregion
 
-		[SerializeField] private Vector2 _lookDirection;
-		public Vector2 lookDirection
+		[SerializeField] private float _lookDirection;
+		public float lookDirection
 		{
 			set { _lookDirection = value; }
 			get { return _lookDirection; }
 		}
 
 		public Vector2 move { get; protected set; }
-		public Rigidbody2D rigidbody2D { private set; get; }
+		public Rigidbody2D rig2D { private set; get; }
 
 		public event Action<float> onHpChanged;
 		public event Action<float> onHpRecover;
@@ -73,7 +91,7 @@ namespace TopdownShooter.Characters
 
 		protected virtual void Awake()
 		{
-			rigidbody2D = GetComponent<Rigidbody2D>();
+			rig2D = GetComponent<Rigidbody2D>();
 			animator = GetComponentInChildren<Animator>();
 			_renderer = animator.GetComponent<SpriteRenderer>();
 			_hpValue = _maxHp;
@@ -95,7 +113,6 @@ namespace TopdownShooter.Characters
 		protected virtual void FixedUpdate()
 		{
 			Move();
-			Look();
 		}
 
 		protected virtual void Move()
@@ -104,17 +121,19 @@ namespace TopdownShooter.Characters
 				return;
 
 			move = new Vector2(horizontal, vertical) * speed * Time.fixedDeltaTime;
-			rigidbody2D.transform.position += (Vector3)move;
+			rig2D.transform.position += (Vector3)move;
 		}
 
-		private void Look()
+		private void LookUpdate(float look)
 		{
 			if(!isLookable)
 				return;
 
-			if (horizontal > 0.0f)
+			_lookDirection = look;
+
+			if (_lookDirection > 0.0f)
 				_renderer.flipX = false;
-			else if (horizontal < 0.0f)
+			else if (_lookDirection < 0.0f)
 				_renderer.flipX = true;
 		}
 

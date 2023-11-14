@@ -15,14 +15,13 @@ namespace TopdownShooter.Weapons
 		private float _damage;
 		private CharacterController _owner;
 
-		public void Init(CharacterController owner, float dmage, LayerMask targetMask)
+		public void Init(CharacterController owner, Vector2 attackDiraction,float dmage, LayerMask targetMask)
 		{
 			_owner = owner;
 			_damage = dmage;
 			_targetMask = targetMask;
-			_diraction = owner.lookDirection;
+			_diraction = attackDiraction;
 
-			targetMask = targetMask | (1 << LayerMask.NameToLayer("Wall"));
 			_timer = 0.0f;
 		}
 

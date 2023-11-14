@@ -100,7 +100,7 @@ namespace TopdownShooter.Weapons
 			_ammoValue = maxAmmo;
 		}
 
-		public virtual void Attack() 
+		public virtual void Attack(Vector2 attackDiraction) 
 		{
 			onAttack?.Invoke();
 		}

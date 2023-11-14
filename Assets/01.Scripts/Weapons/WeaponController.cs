@@ -15,12 +15,15 @@ namespace TopdownShooter.Weapons
 			(_currentWeapon.weaponState == WeaponState.Attackable && _attackWaitTime < 0.0f);
 
 		[SerializeField]
-		private LayerMask _targetMask;
+		private LayerMask _hitMask;
 
 		private CharacterController _owner;
 
 		private float _attackWaitTime;
 		private float _reloadWaitTime;
+
+		public Vector2 aimDiraction { get; private set; }
+
 
 		private void Start()
 		{
@@ -28,7 +31,7 @@ namespace TopdownShooter.Weapons
 
 			foreach (var weapon in _weaponList)
 			{
-				weapon.Init(_owner, _targetMask);
+				weapon.Init(_owner, _hitMask);
 				weapon.gameObject.SetActive(false);
 			}
 			_currentWeapon = _weaponList[0];
@@ -52,7 +55,7 @@ namespace TopdownShooter.Weapons
 			if (_attackWaitTime > 0.0f)
 				return;
 
-			_currentWeapon.Attack();
+			_currentWeapon.Attack(aimDiraction);
 			_attackWaitTime = _currentWeapon.attackCoolTime;
 		}
 
@@ -64,8 +67,6 @@ namespace TopdownShooter.Weapons
 
 		private void Update()
 		{
-			HandRotaion();
-
 			//Attack
 			if (_currentWeapon.weaponState == WeaponState.Attackable)
 			{
@@ -81,9 +82,10 @@ namespace TopdownShooter.Weapons
 			}
 		}
 
-		private void HandRotaion()
+		public void AimUpdate(Vector2 aim)
 		{
-			float theta = Mathf.Atan2(_owner.lookDirection.y, _owner.lookDirection.x) * Mathf.Rad2Deg;
+			aimDiraction = aim;
+			var theta = Mathf.Atan2(aimDiraction.y, aimDiraction.x) * Mathf.Rad2Deg;
 			handPivot.rotation = Quaternion.Euler(0, 0, theta);
 			_currentWeapon.renderer.flipY = (theta >= 90.0f && theta <= 180.0f) || (theta <= -90.0f && theta >= -180.0f) ? true : false;
 		}

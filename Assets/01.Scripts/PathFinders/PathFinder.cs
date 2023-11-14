@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TopdownShooter.Pathfinders
 {
-	public abstract class PathFinder : MonoBehaviour
+	public abstract class PathFinder
 	{
 		protected enum StraightMove
 		{
@@ -47,7 +47,7 @@ namespace TopdownShooter.Pathfinders
 		protected const int MOVE_DIR_LENGTH = 4;
 
 
-		protected virtual void Start()
+		public PathFinder()
 		{
 			visitNodeList = new();
 			openPathTable = new bool[Map.Instance.totalY, Map.Instance.totalX];
@@ -68,19 +68,19 @@ namespace TopdownShooter.Pathfinders
 
 		public abstract bool TryGetPath(Vector2 startPos,Vector2 targetPos, out Vector2[] paths);
 
-		protected virtual void OnDrawGizmosSelected()
-		{
-			if (visitNodeList == null)
-				return;
+		//protected virtual void OnDrawGizmosSelected()
+		//{
+		//	if (visitNodeList == null)
+		//		return;
 
-			Gizmos.color = Color.yellow;
+		//	Gizmos.color = Color.yellow;
 
-			foreach(var node in visitNodeList)
-			{
-				Gizmos.DrawCube(node.position, Vector3.one * 0.3f);
-			}
+		//	foreach(var node in visitNodeList)
+		//	{
+		//		Gizmos.DrawCube(node.position, Vector3.one * 0.3f);
+		//	}
 
-		}
+		//}
 
 		private bool IsNodeExistence(Node.Index index)
 		{

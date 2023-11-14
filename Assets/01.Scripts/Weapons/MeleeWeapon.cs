@@ -12,10 +12,10 @@ namespace TopdownShooter.Weapons
 		public float attackDistance => _attackDistance;
 
 
-		public override void Attack()
+		public override void Attack(Vector2 attackDiraction)
 		{
-			base.Attack();
-			var hits = Physics2D.BoxCastAll(owner.transform.position, _attackSize, 0.0f, owner.lookDirection, _attackDistance, targetMask);
+			base.Attack(attackDiraction);
+			var hits = Physics2D.BoxCastAll(owner.transform.position, _attackSize, 0.0f, attackDiraction, _attackDistance, targetMask);
 
 			DebugDrawHitBox(Color.red, 0.5f);
 

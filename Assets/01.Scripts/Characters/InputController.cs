@@ -26,10 +26,10 @@ namespace TopdownShooter.Characters
 
 		private void MouseLook()
 		{
-			Vector2 characterToMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint(_weaponController.handPivot.position);
-			characterToMousePos.Normalize();
+			Vector2 characterToMousePosDiraction = Input.mousePosition - Camera.main.WorldToScreenPoint(_weaponController.handPivot.position);
+			characterToMousePosDiraction.Normalize();
 
-			_characterController.lookDirection = characterToMousePos;
+			_weaponController.AimUpdate(characterToMousePosDiraction);
 		}
 
 		private void Attack()

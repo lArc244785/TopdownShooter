@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
 namespace TopdownShooter.Weapons
 {
@@ -24,7 +21,7 @@ namespace TopdownShooter.Weapons
 
 		public bool CanAttack { get; }
 
-		public void Attack();
+		public void Attack(Vector2 attackDiraction);
 		public void ReloadEnter();
 		public void ReloadExit();
 

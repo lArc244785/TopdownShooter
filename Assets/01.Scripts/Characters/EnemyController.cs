@@ -8,7 +8,6 @@ namespace TopdownShooter.Characters
 	{
 		private float _purseTime;
 		[SerializeField]private float _purseTimer = 5.0f;
-		[SerializeField] private PathFinder _pathFinder;
 		[SerializeField] private Transform _target;
 		[SerializeField] private LayerMask _targetLayer;
 		[SerializeField] private LayerMask _cantMoveLayer;
@@ -16,6 +15,8 @@ namespace TopdownShooter.Characters
 		[SerializeField] private float _targetDetetedDistacne;
 		[SerializeField] private float _targetPursueDistance;
 
+		private PathFinder _pathFinder;
+		
 		private float _aiTime;
 
 		private Vector2[] _paths;
@@ -32,8 +33,12 @@ namespace TopdownShooter.Characters
 		protected override void Awake()
 		{
 			base.Awake();
-			machine = new EnemyMachine(this);
+		}
 
+		private void Start()
+		{
+			_pathFinder = new PathfFinderAStar();
+			machine = new EnemyMachine(this);
 		}
 
 
@@ -152,10 +157,10 @@ namespace TopdownShooter.Characters
 
 			_nextMovePosition = (Vector2)transform.position + new Vector2(horizontal, vertical) * speed * Time.fixedDeltaTime;
 			if (Vector2.Distance(transform.position, _currentTargetPos) > Vector2.Distance(_nextMovePosition, _currentTargetPos))
-				rigidbody2D.position = _nextMovePosition;
+				rig2D.position = _nextMovePosition;
 			else
 			{
-				rigidbody2D.position = _currentTargetPos;
+				rig2D.position = _currentTargetPos;
 				_index++;
 				if (_index == _paths.Length)
 				{
