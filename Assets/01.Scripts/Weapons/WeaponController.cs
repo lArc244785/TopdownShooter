@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using CharacterController = TopdownShooter.Characters.CharacterController;
 namespace TopdownShooter.Weapons
@@ -23,6 +24,8 @@ namespace TopdownShooter.Weapons
 		public Vector2 aimDiraction { get; private set; }
 		private Timer _attackTimer = new();
 		private Timer _reloadTimer = new();
+
+		public event Action<WeaponBase> onChangeWeapon;
 
 		private void Start()
 		{
@@ -50,6 +53,8 @@ namespace TopdownShooter.Weapons
 			_attackTimer.endTime = _currentWeapon.attackTime;
 			_reloadTimer.currentTime = 0.0f;
 			_reloadTimer.endTime = _currentWeapon.reloadTime;
+
+			onChangeWeapon?.Invoke(_currentWeapon);
 			return true;
 		}
 
@@ -85,6 +90,7 @@ namespace TopdownShooter.Weapons
 					if (_attackTimer.currentTime >= _attackTimer.endTime)
 					{
 						_attackTimer.currentTime = 0.0f;
+						_currentWeapon.weaponState = WeaponState.Attackable;
 					}
 					break;
 
