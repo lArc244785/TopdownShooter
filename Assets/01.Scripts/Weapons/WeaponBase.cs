@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using Ramdom = UnityEngine.Random;
 using CharacterController = TopdownShooter.Characters.CharacterController;
+using Random = UnityEngine.Random;
 
 namespace TopdownShooter.Weapons
 {
@@ -9,60 +9,61 @@ namespace TopdownShooter.Weapons
 	{
 		None,
 		Attackable,
+		Attack,
+		MagazineAmmoEmpty,
+		Reloading,
 		AmmoEmpty,
-		Reload,
 	}
 
 
-	public abstract class WeaponBase : MonoBehaviour, IWeapon, IAmmo
+	public abstract class WeaponBase : MonoBehaviour, IWeapon, IMagazine
 	{
-		[HideInInspector] public WeaponState weaponState;
-		[SerializeField] WeaponType _wepaonType;
-		[SerializeField] AmmoType _ammoType;
-		[SerializeField] private float _attackCoolTime;
-		[SerializeField] private float _reloadCoolTime;
+
+		[SerializeField] private WeaponType _weaponType;
+
 		[SerializeField] private float _minDamage;
 		[SerializeField] private float _maxDamage;
 
-		public SpriteRenderer renderer { private set; get; }
+		[SerializeField] private float _attackTime;
+		[SerializeField] private float _reloadTime;
 
-		public bool isUseAmmo;
+		[SerializeField] public bool isInfiniteAmmo;
 
-		protected CharacterController owner;
+		public bool canReload => (weaponState == WeaponState.Attackable && magazineAmmoValue < maxMagazineAmmo) ||
+								  weaponState == WeaponState.MagazineAmmoEmpty;
+		public float damage => Random.RandomRange(_minDamage, _maxDamage);
 
-		protected LayerMask targetMask;
+		public float attackTime => _attackTime;
 
-		public float damage => UnityEngine.Random.Range(_minDamage, _maxDamage);
+		public float reloadTime => _reloadTime;
 
-		public float attackCoolTime => _attackCoolTime;
-		public float reloadCoolTime => _reloadCoolTime;
+		public WeaponType weaponType => _weaponType;
+		[field: SerializeField] public WeaponState weaponState { set; get; }
 
-		public bool CanAttack => ammoValue > minAmmo && weaponState == WeaponState.Attackable;
+		private int _magazineAmmoValue;
+		public int magazineAmmoValue
+		{
+			get
+			{
+				return _magazineAmmoValue;
+			}
+			set
+			{
+				if (value == magazineAmmoValue)
+					return;
+				_magazineAmmoValue = Mathf.Clamp(value, minMagazineAmmo, maxMagazineAmmo);
 
-		#region events
-		//IWeapon
-		public event Action onAttack;
-		public event Action onReloadEnter;
-		public event Action onReloadExit;
-		//IAmmo
-		public event Action<int> onChangeAmmo;
-		public event Action<int> onUseAmmo;
-		public event Action<int> onAddAmmo;
-		public event Action onMinAmmo;
-		public event Action onMaxAmmo;
-		#endregion
+				onChangeMagazineAmmo?.Invoke(value);
+				if (_magazineAmmoValue == minMagazineAmmo)
+					onMinMagazineAmmo?.Invoke();
+			}
+		}
 
-		#region types
-		public WeaponType weaponType => _wepaonType;
+		[SerializeField] private int _maxMagazineAmmo;
+		public int maxMagazineAmmo => _maxMagazineAmmo;
+		public int minMagazineAmmo => 0;
 
-		public AmmoType ammoType => _ammoType;
-		#endregion
-
-		#region ammo
-		[SerializeField] private int _maxAmmo;
-		public int maxAmmo => _maxAmmo;
-
-		[SerializeField] private int _ammoValue;
+		private int _ammoValue;
 		public int ammoValue
 		{
 			get
@@ -71,68 +72,115 @@ namespace TopdownShooter.Weapons
 			}
 			set
 			{
-				if (value != _ammoValue)
-					onChangeAmmo?.Invoke(value);
+				if (_ammoValue == value)
+					return;
 
 				_ammoValue = Mathf.Clamp(value, minAmmo, maxAmmo);
+				onChangeAmmo?.Invoke(value);
 
-				if (minAmmo == _ammoValue)
+				if (_ammoValue == minAmmo)
 					onMinAmmo?.Invoke();
-				if (maxAmmo == _ammoValue)
+				else if (_ammoValue == maxAmmo)
 					onMaxAmmo?.Invoke();
-
 			}
 		}
+
+		[SerializeField] private int _maxAmmo;
+		public int maxAmmo => _maxAmmo;
 
 		public int minAmmo => 0;
-		#endregion
 
-		private void Awake()
+		public event Action onAttack;
+		public event Action onReload;
+		public event Action<int> onChangeMagazineAmmo;
+		public event Action onMinMagazineAmmo;
+		public event Action onMaxAmmo;
+		public event Action onMinAmmo;
+		public event Action<int> onChangeAmmo;
+		public event Action onAddAmmo;
+
+		public CharacterController owner => _owner;
+		private CharacterController _owner;
+
+		protected LayerMask targetLayerMask;
+		public SpriteRenderer renderer { get; private set; }
+
+		protected virtual void Awake()
 		{
 			renderer = GetComponentInChildren<SpriteRenderer>();
-		}
 
-		public virtual void Init(CharacterController owner, LayerMask targetMask)
-		{
-			this.owner = owner;
-			this.targetMask = targetMask;
+			_ammoValue = _maxAmmo;
+			_magazineAmmoValue = _maxMagazineAmmo;
 			weaponState = WeaponState.Attackable;
-			_ammoValue = maxAmmo;
-		}
-
-		public virtual void Attack(Vector2 attackDiraction) 
-		{
-			onAttack?.Invoke();
-		}
-
-		public void UseAmmo(int amount)
-		{
-			if (isUseAmmo)
+			//탄창이 비어있는데 탄도 없는 경우
+			onMinMagazineAmmo += () =>
 			{
-				ammoValue -= amount;
+				weaponState = WeaponState.MagazineAmmoEmpty;
 				if (ammoValue == minAmmo)
 					weaponState = WeaponState.AmmoEmpty;
-			}
-			onUseAmmo?.Invoke(amount);
+			};
+			//탄이 없다가 탄이 채워진 경우
+			onAddAmmo += () =>
+			{
+				if (weaponState == WeaponState.AmmoEmpty)
+					weaponState = WeaponState.MagazineAmmoEmpty;
+			};
 		}
+
+		public virtual void Init(CharacterController owner, LayerMask targetLayerMask)
+		{
+			_owner = owner;
+			this.targetLayerMask = targetLayerMask;
+		}
+
 
 		public void AddAmmo(int amount)
 		{
 			ammoValue += amount;
-			onAddAmmo?.Invoke(amount);
+			onAddAmmo?.Invoke();
 		}
 
-		public void ReloadEnter()
+		public void AddMagazineAmmo(int amount)
 		{
-			weaponState = WeaponState.Reload;
-			onReloadEnter?.Invoke();
+			magazineAmmoValue += amount;
 		}
 
-		public virtual void ReloadExit()
+		public virtual bool Attack(Vector2 attackDiraction)
+		{
+			return weaponState == WeaponState.Attackable;
+		}
+
+
+		public void Reload()
 		{
 			weaponState = WeaponState.Attackable;
-			ammoValue = maxAmmo;
-			onReloadExit?.Invoke();
+
+			//가지고 있는 탄약에서 최재 장탄수를 빼본다.
+			bool inputMaxAmmo = ammoValue - maxMagazineAmmo > 0 ? true : false;
+			int ammo = maxMagazineAmmo;
+
+			if (!inputMaxAmmo)
+			{
+				ammo = ammoValue;
+			}
+
+			//탄이 남아있는 경우
+			if(ammo > 0)
+			{
+				AddMagazineAmmo(ammo);
+				UseAmmo(ammo);
+			}
+		}
+
+		public void UseAmmo(int amount)
+		{
+			if (!isInfiniteAmmo)
+				ammoValue -= amount;
+		}
+
+		public void UseMagazineAmmo(int amount)
+		{
+			magazineAmmoValue -= amount;
 		}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using CharacterController = TopdownShooter.Characters.CharacterController;
 namespace TopdownShooter.Weapons
@@ -7,79 +6,114 @@ namespace TopdownShooter.Weapons
 
 	public class WeaponController : MonoBehaviour
 	{
-		[field:SerializeField] public Transform handPivot { private set; get; }
+		[field: SerializeField] public Transform handPivot { private set; get; }
 		[SerializeField] private WeaponBase _currentWeapon;
 		[SerializeField] private List<WeaponBase> _weaponList;
 
-		private bool _isSwapable => _currentWeapon.weaponState != WeaponState.Reload || 
-			(_currentWeapon.weaponState == WeaponState.Attackable && _attackWaitTime < 0.0f);
+		public bool CanWeaponSwitch() =>
+			_currentWeapon == null ||
+			_currentWeapon.weaponState == WeaponState.Attackable ||
+			_currentWeapon.weaponState == WeaponState.MagazineAmmoEmpty;
 
 		[SerializeField]
 		private LayerMask _hitMask;
 
 		private CharacterController _owner;
 
-		private float _attackWaitTime;
-		private float _reloadWaitTime;
-
 		public Vector2 aimDiraction { get; private set; }
-
+		private Timer _attackTimer = new();
+		private Timer _reloadTimer = new();
 
 		private void Start()
 		{
 			_owner = GetComponent<CharacterController>();
-
 			foreach (var weapon in _weaponList)
 			{
 				weapon.Init(_owner, _hitMask);
 				weapon.gameObject.SetActive(false);
 			}
-			_currentWeapon = _weaponList[0];
-			_currentWeapon.gameObject.SetActive(true);
+
+			ChangeWeapon(0);
+
 		}
 
 		public bool ChangeWeapon(int index)
 		{
-			if (!_isSwapable || (index < 0 || index >= _weaponList.Count))
+			if (!CanWeaponSwitch() || (index < 0 || index >= _weaponList.Count))
 				return false;
 
-			_currentWeapon.gameObject.SetActive(false);
+			_currentWeapon?.gameObject.SetActive(false);
 			_currentWeapon = _weaponList[index];
 			_currentWeapon.gameObject.SetActive(true);
+
+			_attackTimer.currentTime = 0.0f;
+			_attackTimer.endTime = _currentWeapon.attackTime;
+			_reloadTimer.currentTime = 0.0f;
+			_reloadTimer.endTime = _currentWeapon.reloadTime;
 			return true;
 		}
 
-
-		public void Attack()
+		public bool TryGetWeapon(WeaponType weaponType, out WeaponBase weapon)
 		{
-			if (_attackWaitTime > 0.0f)
-				return;
+			weapon = null;
+			foreach (var item in _weaponList)
+			{
+				if (item.weaponType == weaponType)
+				{
+					weapon = item;
+					return true;
+				}
+			}
 
-			_currentWeapon.Attack(aimDiraction);
-			_attackWaitTime = _currentWeapon.attackCoolTime;
-		}
-
-		public void ReLoad()
-		{
-			_currentWeapon.ReloadEnter();
-			_reloadWaitTime = _currentWeapon.reloadCoolTime;
+			return false;
 		}
 
 		private void Update()
 		{
-			//Attack
-			if (_currentWeapon.weaponState == WeaponState.Attackable)
-			{
-				_attackWaitTime -= Time.deltaTime;
-			}
+			if (_currentWeapon == null)
+				return;
 
-			//Reload
-			if (_currentWeapon.weaponState == WeaponState.Reload)
+			WeaponUpdate();
+		}
+
+		private void WeaponUpdate()
+		{
+			switch (_currentWeapon.weaponState)
 			{
-				_reloadWaitTime -= Time.deltaTime;
-				if (_reloadWaitTime < 0.0f)
-					_currentWeapon.ReloadExit();
+				case WeaponState.Attack:
+					_attackTimer.currentTime += Time.deltaTime;
+					if (_attackTimer.currentTime >= _attackTimer.endTime)
+					{
+						_attackTimer.currentTime = 0.0f;
+					}
+					break;
+
+				case WeaponState.Reloading:
+					_reloadTimer.currentTime += Time.deltaTime;
+					if (_reloadTimer.currentTime >= _reloadTimer.endTime)
+					{
+						_reloadTimer.currentTime = 0.0f;
+						_currentWeapon.Reload();
+					}
+					break;
 			}
+		}
+
+		public void Attack()
+		{
+			if (!_currentWeapon.Attack(aimDiraction))
+				return;
+
+			if(_currentWeapon.weaponState == WeaponState.Attackable)
+				_currentWeapon.weaponState = WeaponState.Attack;
+		}
+
+		public void ReLoad()
+		{
+			if (!_currentWeapon.canReload)
+				return;
+
+			_currentWeapon.weaponState = WeaponState.Reloading;
 		}
 
 		public void AimUpdate(Vector2 aim)

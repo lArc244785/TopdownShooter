@@ -15,18 +15,17 @@ namespace TopdownShooter.Weapons
 	{
 		public string name { get; }
 		public float damage { get; }
-		public float attackCoolTime { get; }
-		public float reloadCoolTime { get; }
+
+		public float attackTime { get; }
+		public float reloadTime { get; }
+		public bool canReload { get;}
+
 		public WeaponType weaponType { get; }
 
-		public bool CanAttack { get; }
-
-		public void Attack(Vector2 attackDiraction);
-		public void ReloadEnter();
-		public void ReloadExit();
+		public bool Attack(Vector2 attackDiraction);
+		public void Reload();
 
 		public event Action onAttack;
-		public event Action onReloadEnter;
-		public event Action onReloadExit;
+		public event Action onReload;
 	}
 }

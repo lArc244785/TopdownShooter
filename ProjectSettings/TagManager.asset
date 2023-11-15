@@ -19,7 +19,7 @@ TagManager:
   - EnemyCollision
   - MapWall
   - Projectile
-  - 
+  - PickUpItem
   - 
   - 
   - 

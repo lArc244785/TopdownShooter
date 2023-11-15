@@ -11,16 +11,20 @@ namespace TopdownShooter.Weapons
 		[SerializeField] private float _attackDistance;
 		public float attackDistance => _attackDistance;
 
-
-		public override void Attack(Vector2 attackDiraction)
+		protected override void Awake()
 		{
-			base.Attack(attackDiraction);
-			var hits = Physics2D.BoxCastAll(owner.transform.position, _attackSize, 0.0f, attackDiraction, _attackDistance, targetMask);
+			base.Awake();
+			isInfiniteAmmo = true;
+		}
 
-			DebugDrawHitBox(Color.red, 0.5f);
+		public override bool Attack(Vector2 attackDiraction)
+		{
+			if(!base.Attack(attackDiraction))
+				return false;
 
+			var hits = Physics2D.BoxCastAll(owner.transform.position, _attackSize, 0.0f, attackDiraction, _attackDistance, targetLayerMask);
 			if (hits == null)
-				return;
+				return false;
 
 			foreach(var hit in hits)
 			{
@@ -29,6 +33,9 @@ namespace TopdownShooter.Weapons
 					hp.DeleteHp(owner.transform,damage);
 				}
 			}
+
+			UseMagazineAmmo(1);
+			return true;
 		}
 
 		private void DebugDrawHitBox(Color color, float duration)
