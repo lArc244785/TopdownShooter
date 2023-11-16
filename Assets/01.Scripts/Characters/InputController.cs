@@ -7,10 +7,18 @@ namespace TopdownShooter.Characters
 	{
 		[SerializeField] private CharacterController _characterController;
 		[SerializeField] private WeaponController _weaponController;
+		[HideInInspector] public bool isInputable;
 
+		private void Awake()
+		{
+			isInputable = true;
+		}
 
 		private void Update()
 		{
+			if (!isInputable)
+				return;
+
 			Move();
 			MouseLook();
 			Attack();

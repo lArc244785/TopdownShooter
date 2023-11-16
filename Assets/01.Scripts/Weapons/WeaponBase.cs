@@ -53,7 +53,7 @@ namespace TopdownShooter.Weapons
 					return;
 				_magazineAmmoValue = Mathf.Clamp(value, minMagazineAmmo, maxMagazineAmmo);
 
-				onChangeMagazineAmmo?.Invoke(value);
+				onChangeMagazineAmmo?.Invoke(_magazineAmmoValue);
 				if (_magazineAmmoValue == minMagazineAmmo)
 					onMinMagazineAmmo?.Invoke();
 			}
@@ -76,7 +76,7 @@ namespace TopdownShooter.Weapons
 					return;
 
 				_ammoValue = Mathf.Clamp(value, minAmmo, maxAmmo);
-				onChangeAmmo?.Invoke(value);
+				onChangeAmmo?.Invoke(_ammoValue);
 
 				if (_ammoValue == minAmmo)
 					onMinAmmo?.Invoke();

@@ -25,7 +25,7 @@ namespace TopdownShooter.Weapons
 		private Timer _attackTimer = new();
 		private Timer _reloadTimer = new();
 
-		public event Action<WeaponBase> onChangeWeapon;
+		public event Action<WeaponBase, WeaponBase> onChangeWeapon;
 
 		public Action _attackEndCallback;
 		public Action _reloadEndCallBack;
@@ -50,6 +50,8 @@ namespace TopdownShooter.Weapons
 			if (!CanWeaponSwitch() || (index < 0 || index >= _weaponList.Count))
 				return false;
 
+			WeaponBase oldWeapon = _currentWeapon;
+
 			_currentWeapon?.gameObject.SetActive(false);
 			_currentWeapon = _weaponList[index];
 			_currentWeapon.gameObject.SetActive(true);
@@ -59,7 +61,7 @@ namespace TopdownShooter.Weapons
 			_reloadTimer.currentTime = 0.0f;
 			_reloadTimer.endTime = _currentWeapon.reloadTime;
 
-			onChangeWeapon?.Invoke(_currentWeapon);
+			onChangeWeapon?.Invoke(oldWeapon, _currentWeapon);
 			return true;
 		}
 

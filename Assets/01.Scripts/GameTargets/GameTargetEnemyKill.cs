@@ -11,7 +11,9 @@ namespace TopdownShooter.GameTargets
 		[SerializeField] private int _targetKill;
 		private int _currentKill = 0;
 
-		public override string progressToString => $"{_currentKill} / {_targetKill}";
+		public override string ToStringProgress => $"Enemy Kill {_currentKill} / {_targetKill}";
+
+		public override bool isComplete => _currentKill >= _targetKill;
 
 		private void Start()
 		{
@@ -34,7 +36,6 @@ namespace TopdownShooter.GameTargets
 		public override void Compelete()
 		{
 			base.Compelete();
-			Debug.Log("All Kill Enemy!!!!");
 		}
 	}
 }

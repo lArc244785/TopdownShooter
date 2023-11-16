@@ -153,6 +153,12 @@ namespace TopdownShooter.Characters
 		{
 			onDead?.Invoke();
 		}
+
+		public void Stop()
+		{
+			horizontal = 0.0f;
+			vertical = 0.0f;
+		}
 	}
 
 }

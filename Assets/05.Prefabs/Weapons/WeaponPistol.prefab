@@ -46,12 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695c3fd850301644e95740f8bb4ca194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponName: 
   _weaponType: 1
   _minDamage: 1
   _maxDamage: 3
   _attackTime: 0.1
   _reloadTime: 1
-  isInfiniteAmmo: 1
+  isInfiniteAmmo: 0
   <weaponState>k__BackingField: 0
   _maxMagazineAmmo: 12
   _maxAmmo: 36
