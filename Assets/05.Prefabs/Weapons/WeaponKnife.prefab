@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 412505761212086289}
   - component: {fileID: 7094489293697213728}
+  - component: {fileID: 8982716057131175079}
   m_Layer: 0
   m_Name: Renderer
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2628450317754639999}
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: -1862881181
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1623882389, guid: 1dda85da0d96bb248b2e820cfc41b333, type: 3}
+  m_Sprite: {fileID: -1817280895, guid: 1dda85da0d96bb248b2e820cfc41b333, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -84,6 +85,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8982716057131175079
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2960544845134006362}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0f259b50bca5fba449aaa7418a84b9e4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3122578759732792097
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,15 +151,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c5c5bb5bf07dbf44a32a0f907772d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponState: 0
-  _wepaonType: 2
-  _ammoType: 0
-  _attackCoolTime: 0.3
-  _reloadCoolTime: 0
+  _weaponName: "\uCFE0\uD06C\uB9AC"
+  _weaponType: 0
   _minDamage: 0
   _maxDamage: 0
-  isUseAmmo: 0
+  _attackTime: 0
+  _reloadTime: 0
+  isInfiniteAmmo: 0
+  <weaponState>k__BackingField: 0
+  _maxMagazineAmmo: 0
   _maxAmmo: 0
-  _ammoValue: 0
   _attackSize: {x: 0.5, y: 1}
   _attackDistance: 2

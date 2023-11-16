@@ -19,7 +19,7 @@ namespace TopdownShooter
 		void Start()
 		{
 			_player.onDead += () => GameResult(false, -9999);
-			_gameTargetManger.onAllTargetComplete += () => GameResult(false, 9999);
+			_gameTargetManger.onAllTargetComplete += () => GameResult(true, 9999);
 		}
 
 		private void GameResult(bool isGameClear, int score)

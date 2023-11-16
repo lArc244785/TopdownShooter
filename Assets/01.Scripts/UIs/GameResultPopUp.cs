@@ -8,6 +8,7 @@ namespace TopdownShooter.UIs
 {
 	public class GameResultPopUp : MonoBehaviour
 	{
+		[SerializeField] private TextMeshProUGUI _textGameResult;
 		[SerializeField] private TextMeshProUGUI _textScore;
 		[SerializeField] private Button _buttonContinue;
 		[SerializeField] private Button _buttonExit;
@@ -23,6 +24,7 @@ namespace TopdownShooter.UIs
 		{
 			gameObject.SetActive(true);
 			string gameResult = isGameClear ? "game clear" : "game over";
+			_textGameResult.text = gameResult;
 			_textScore.text = scroe.ToString();
 		}
 	}

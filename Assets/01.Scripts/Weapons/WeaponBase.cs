@@ -91,7 +91,7 @@ namespace TopdownShooter.Weapons
 		public int minAmmo => 0;
 
 		public event Action onAttack;
-		public event Action onReload;
+		public event Action onReloadFinsh;
 		public event Action<int> onChangeMagazineAmmo;
 		public event Action onMinMagazineAmmo;
 		public event Action onMaxAmmo;
@@ -99,6 +99,7 @@ namespace TopdownShooter.Weapons
 		public event Action<int> onChangeAmmo;
 		public event Action onAddAmmo;
 		public event Action onAddMagazine;
+		public event Action onReloadStart;
 
 		public CharacterController owner => _owner;
 		private CharacterController _owner;
@@ -152,12 +153,17 @@ namespace TopdownShooter.Weapons
 			if (weaponState == WeaponState.Attackable)
 			{
 				weaponState = WeaponState.Attack;
+				onAttack?.Invoke();
 				return true;
 			}
 
 			return false;
 		}
 
+		public void ReloadStart()
+		{
+			onReloadStart?.Invoke();
+		}
 
 		public void Reload()
 		{
@@ -179,6 +185,8 @@ namespace TopdownShooter.Weapons
 				AddMagazineAmmo(ammo);
 				UseAmmo(ammo);
 			}
+
+			onReloadFinsh?.Invoke();
 		}
 
 		public void UseAmmo(int amount)

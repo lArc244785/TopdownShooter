@@ -26,6 +26,7 @@ namespace TopdownShooter.Weapons
 		public void Reload();
 
 		public event Action onAttack;
-		public event Action onReload;
+		public event Action onReloadStart;
+		public event Action onReloadFinsh;
 	}
 }

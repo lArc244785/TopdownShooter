@@ -136,6 +136,7 @@ namespace TopdownShooter.Weapons
 			if (!_currentWeapon.canReload)
 				return false;
 
+			_currentWeapon.ReloadStart();
 			_currentWeapon.weaponState = WeaponState.Reloading;
 			_reloadEndCallBack = reloadEndCallback;
 			return true;
@@ -152,6 +153,18 @@ namespace TopdownShooter.Weapons
 		public bool CanAttack()
 		{
 			return _currentWeapon != null && _currentWeapon.weaponState == WeaponState.Attackable;
+		}
+
+		private void OnDrawGizmos()
+		{
+			Gizmos.color = Color.cyan;
+
+			var diraction = aimDiraction.sqrMagnitude > 0.0f ? aimDiraction : Vector2.right;
+
+			var startPos = handPivot.position;
+			var endPos = startPos + (Vector3)(Vector2.one * diraction * 1.0f);
+
+			Gizmos.DrawLine(startPos, endPos);
 		}
 	}
 }
