@@ -10,6 +10,7 @@ namespace TopdownShooter.Characters
 		None,
 		RandomMove,
 		Attack,
+		Reload,
 		Follow,
 		Pursue,
 	}
@@ -48,6 +49,7 @@ namespace TopdownShooter.Characters
 		private Vector2 _nextMovePosition;
 
 		private LayerMask _rayMask;
+
 
 		protected override void Awake()
 		{
@@ -183,22 +185,37 @@ namespace TopdownShooter.Characters
 
 		}
 
+		private void AttackEnd()
+		{
+			if (_weaponController.currentWeaponState == WeaponState.MagazineAmmoEmpty)
+			{
+				_weaponController.ReLoad(() =>
+				{
+					isMoveable = true;
+					_aiState = AIState.RandomMove;
+				});
+			}
+			else
+			{
+				isMoveable = true;
+				_aiState = AIState.RandomMove;
+			}
+		}
+
 		private void Attack()
 		{
 			if (_aiState == AIState.Attack)
 			{
+				if (_weaponController.currentWeaponState != WeaponState.Attackable)
+					return;
+
 				_attackWaitTimer.currentTime += Time.deltaTime;
 				var aimDir = (_attackTarget.position - transform.position).normalized;
 				_weaponController.AimUpdate(aimDir);
 
 				if (_attackWaitTimer.currentTime >= _attackWaitTimer.endTime)
 				{
-					_weaponController.Attack();
-					_attackWaitTimer.currentTime = 0.0f;
-					_aiState = AIState.RandomMove;
-					horizontal = 0.0f;
-					vertical = 0.0f;
-					isMoveable = true;
+					_weaponController.Attack(AttackEnd);
 				}
 			}
 			else
@@ -213,7 +230,15 @@ namespace TopdownShooter.Characters
 				if (hit.collider == null || (_cantMoveLayer & 1 << hit.transform.gameObject.layer) > 0)
 					return;
 
+				if (!_weaponController.CanAttack())
+					return;
+
 				isMoveable = false;
+
+				horizontal = 0.0f;
+				vertical = 0.0f;
+				machine.ChangeState(CharacterStateID.Idle);
+
 				_attackTarget = hit.transform;
 				_aiState = AIState.Attack;
 				_attackWaitTimer.currentTime = 0.0f;

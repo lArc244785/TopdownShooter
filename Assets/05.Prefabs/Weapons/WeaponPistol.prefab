@@ -46,15 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695c3fd850301644e95740f8bb4ca194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponType: 0
+  _weaponType: 1
   _minDamage: 1
   _maxDamage: 3
-  _attackTime: 0
-  _reloadTime: 0
+  _attackTime: 0.1
+  _reloadTime: 1
   isInfiniteAmmo: 1
   <weaponState>k__BackingField: 0
-  _maxMagazineAmmo: 0
-  _maxAmmo: 8
+  _maxMagazineAmmo: 12
+  _maxAmmo: 36
   _projectile: {fileID: 537955101718875504, guid: f3305c436804819409462062698391bf, type: 3}
   _firePoint: {fileID: 321590912424234588}
 --- !u!1 &4627376460938114656

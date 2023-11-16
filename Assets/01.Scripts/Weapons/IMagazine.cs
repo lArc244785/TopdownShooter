@@ -18,5 +18,6 @@ namespace TopdownShooter.Weapons
 
 		public event Action<int> onChangeMagazineAmmo;
 		public event Action onMinMagazineAmmo;
+		public event Action onAddMagazine;
 	}
 }

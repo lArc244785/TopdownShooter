@@ -18,7 +18,7 @@ namespace TopdownShooter.Weapons
 
 	public abstract class WeaponBase : MonoBehaviour, IWeapon, IMagazine
 	{
-
+		[SerializeField] private string _weaponName;	
 		[SerializeField] private WeaponType _weaponType;
 
 		[SerializeField] private float _minDamage;
@@ -98,12 +98,18 @@ namespace TopdownShooter.Weapons
 		public event Action onMinAmmo;
 		public event Action<int> onChangeAmmo;
 		public event Action onAddAmmo;
+		public event Action onAddMagazine;
 
 		public CharacterController owner => _owner;
 		private CharacterController _owner;
 
 		protected LayerMask targetLayerMask;
 		public SpriteRenderer renderer { get; private set; }
+
+		public bool isAmmoEmpty { get; private set; }
+		public bool isMagazineEmtpy { get; private set; }
+
+		public string weaponName => _weaponName;
 
 		protected virtual void Awake()
 		{
@@ -112,19 +118,14 @@ namespace TopdownShooter.Weapons
 			_ammoValue = _maxAmmo;
 			_magazineAmmoValue = _maxMagazineAmmo;
 			weaponState = WeaponState.Attackable;
-			//탄창이 비어있는데 탄도 없는 경우
-			onMinMagazineAmmo += () =>
-			{
-				weaponState = WeaponState.MagazineAmmoEmpty;
-				if (ammoValue == minAmmo)
-					weaponState = WeaponState.AmmoEmpty;
-			};
-			//탄이 없다가 탄이 채워진 경우
-			onAddAmmo += () =>
-			{
-				if (weaponState == WeaponState.AmmoEmpty)
-					weaponState = WeaponState.MagazineAmmoEmpty;
-			};
+
+			//탄 추가
+			onAddAmmo += () => isAmmoEmpty = false;
+			onAddMagazine += () => isMagazineEmtpy = false;
+
+			//탄 모두 소모 시
+			onMinAmmo += () => isAmmoEmpty = true;
+			onMinMagazineAmmo += () => isMagazineEmtpy = true;
 		}
 
 		public virtual void Init(CharacterController owner, LayerMask targetLayerMask)
@@ -143,16 +144,24 @@ namespace TopdownShooter.Weapons
 		public void AddMagazineAmmo(int amount)
 		{
 			magazineAmmoValue += amount;
+			onAddMagazine?.Invoke();
 		}
 
 		public virtual bool Attack(Vector2 attackDiraction)
 		{
-			return weaponState == WeaponState.Attackable;
+			if (weaponState == WeaponState.Attackable)
+			{
+				weaponState = WeaponState.Attack;
+				return true;
+			}
+
+			return false;
 		}
 
 
 		public void Reload()
 		{
+			Debug.Log($"{weaponName} Reload");
 			weaponState = WeaponState.Attackable;
 
 			//가지고 있는 탄약에서 최재 장탄수를 빼본다.

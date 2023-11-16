@@ -421,10 +421,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3108561445566650330}
     m_Modifications:
-    - target: {fileID: 1237389597587779699, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
-      propertyPath: _maxAmmo
-      value: 999999
-      objectReference: {fileID: 0}
     - target: {fileID: 4047643838570454793, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
       propertyPath: m_Name
       value: WeaponPistol

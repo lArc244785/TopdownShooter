@@ -27,6 +27,11 @@ namespace TopdownShooter.Weapons
 
 		public event Action<WeaponBase> onChangeWeapon;
 
+		public Action _attackEndCallback;
+		public Action _reloadEndCallBack;
+			
+		public WeaponState currentWeaponState => _currentWeapon.weaponState;
+
 		private void Start()
 		{
 			_owner = GetComponent<CharacterController>();
@@ -89,8 +94,14 @@ namespace TopdownShooter.Weapons
 					_attackTimer.currentTime += Time.deltaTime;
 					if (_attackTimer.currentTime >= _attackTimer.endTime)
 					{
-						_attackTimer.currentTime = 0.0f;
-						_currentWeapon.weaponState = WeaponState.Attackable;
+						if (_currentWeapon.isAmmoEmpty)
+							_currentWeapon.weaponState = WeaponState.AmmoEmpty;
+						else if (_currentWeapon.isMagazineEmtpy)
+							_currentWeapon.weaponState = WeaponState.MagazineAmmoEmpty;
+						else
+							_currentWeapon.weaponState = WeaponState.Attackable;
+
+						_attackEndCallback?.Invoke();
 					}
 					break;
 
@@ -100,26 +111,32 @@ namespace TopdownShooter.Weapons
 					{
 						_reloadTimer.currentTime = 0.0f;
 						_currentWeapon.Reload();
+						_reloadEndCallBack?.Invoke();
 					}
 					break;
 			}
 		}
 
-		public void Attack()
+		public bool Attack(Action attackEndCallBack = null)
 		{
-			if (!_currentWeapon.Attack(aimDiraction))
-				return;
+			if(_currentWeapon.Attack(aimDiraction))
+			{
+				_attackTimer.currentTime = 0.0f;
+				_attackEndCallback = attackEndCallBack;
+				return true;
+			}
 
-			if(_currentWeapon.weaponState == WeaponState.Attackable)
-				_currentWeapon.weaponState = WeaponState.Attack;
+			return false;
 		}
 
-		public void ReLoad()
+		public bool ReLoad(Action reloadEndCallback = null)
 		{
 			if (!_currentWeapon.canReload)
-				return;
+				return false;
 
 			_currentWeapon.weaponState = WeaponState.Reloading;
+			_reloadEndCallBack = reloadEndCallback;
+			return true;
 		}
 
 		public void AimUpdate(Vector2 aim)
@@ -130,5 +147,9 @@ namespace TopdownShooter.Weapons
 			_currentWeapon.renderer.flipY = (theta >= 90.0f && theta <= 180.0f) || (theta <= -90.0f && theta >= -180.0f) ? true : false;
 		}
 
+		public bool CanAttack()
+		{
+			return _currentWeapon != null && _currentWeapon.weaponState == WeaponState.Attackable;
+		}
 	}
 }

@@ -13,7 +13,7 @@ namespace TopdownShooter.Weapons
 
 	public interface IWeapon
 	{
-		public string name { get; }
+		public string weaponName { get; }
 		public float damage { get; }
 
 		public float attackTime { get; }
