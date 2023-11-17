@@ -11,11 +11,17 @@ namespace TopdownShooter.GameTargets
 	{
 		public GameTarget[] targets { private set; get; }
 		private int _completeCount;
+		public int completeCount => _completeCount;
+
+		public int allCompeleteCount => targets.Length;
 		
 		public event Action onAllTargetComplete;
 
+		public static GameTargetManager instance { get; private set; }
+
 		private void Awake()
 		{
+			instance = this;
 			targets = GetComponentsInChildren<GameTarget>();
 
 			foreach (GameTarget target in targets)

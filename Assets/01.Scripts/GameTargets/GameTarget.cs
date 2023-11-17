@@ -5,6 +5,7 @@ namespace TopdownShooter.GameTargets
 {
 	public abstract class GameTarget : MonoBehaviour
 	{
+		public abstract bool isDrawUiTarget { get; }
 		public abstract bool isComplete { get; }
 		public abstract string ToStringProgress { get; }
 		public event Action onUpdateProgress;

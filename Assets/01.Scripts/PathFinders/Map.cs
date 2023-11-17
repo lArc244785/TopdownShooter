@@ -84,7 +84,7 @@ namespace TopdownShooter.Pathfinders
 					var col = Physics2D.OverlapPoint(rayPoint, _mapLayer);
 					if (col != null)
 					{
-						if (col.gameObject.layer == groundLayer)
+						if (col.gameObject.layer == groundLayer && col.gameObject.tag != "NotMoveable")
 							isVisitable = true;
 					}
 

@@ -25,6 +25,7 @@ namespace TopdownShooter.UIs
 				var textGameTarget = Instantiate(_textGameTarget, rectTransfrom);
 				textGameTarget.text = target.ToStringProgress;
 				target.onUpdateProgress += () => textGameTarget.text = target.ToStringProgress;
+				target.onCompelete += () => textGameTarget.fontStyle = FontStyles.Strikethrough | FontStyles.Bold;
 			}
 		}
 	}

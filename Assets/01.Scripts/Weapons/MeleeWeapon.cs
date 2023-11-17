@@ -51,5 +51,9 @@ namespace TopdownShooter.Weapons
 			Debug.DrawLine(bottomLeft, topLeft, color, duration);
 		}
 
+		public override void SetFlipY(bool y)
+		{
+			renderer.flipY = y;
+		}
 	}
 }

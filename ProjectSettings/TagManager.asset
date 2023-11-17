@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - NotMoveable
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - MapWall
   - Projectile
   - PickUpItem
-  - 
-  - 
+  - MapObjectCollision
+  - InteractionObject
   - 
   - 
   - 
@@ -47,12 +48,15 @@ TagManager:
   - name: Wall
     uniqueID: 13802789
     locked: 0
-  - name: Deco
+  - name: BackDeco
     uniqueID: 2430147829
     locked: 0
   - name: Actor
     uniqueID: 386750355
     locked: 0
-  - name: Prob
+  - name: FrontDeco_A
     uniqueID: 2432086115
+    locked: 0
+  - name: FrontDeco_B
+    uniqueID: 1610368595
     locked: 0

@@ -13,7 +13,11 @@ namespace TopdownShooter.GameTargets
 
 		public override string ToStringProgress => $"Enemy Kill {_currentKill} / {_targetKill}";
 
-		public override bool isComplete => _currentKill >= _targetKill;
+		public override bool isComplete => _isCompelte;
+
+		public override bool isDrawUiTarget => true;
+
+		private bool _isCompelte;
 
 		private void Start()
 		{
@@ -36,6 +40,7 @@ namespace TopdownShooter.GameTargets
 		public override void Compelete()
 		{
 			base.Compelete();
+			_isCompelte = true;
 		}
 	}
 }

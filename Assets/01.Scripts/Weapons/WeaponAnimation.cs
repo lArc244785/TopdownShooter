@@ -15,8 +15,11 @@ namespace TopdownShooter.Weapons
 		private void Start()
 		{
 			_weapon = GetComponent<WeaponBase>();
-			_weapon.onAttack += () => _animator.SetTrigger("Attack");
-			_weapon.onReloadStart += () => _animator.SetTrigger("Reload");
+			_weapon.onAttack += () =>
+			{
+				_animator?.SetTrigger("Attack");
+			};
+			_weapon.onReloadStart += () => _animator?.SetTrigger("Reload");
 		}
 	}
 }

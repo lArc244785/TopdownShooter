@@ -29,7 +29,7 @@ namespace TopdownShooter.Weapons
 
 		public Action _attackEndCallback;
 		public Action _reloadEndCallBack;
-			
+
 		public WeaponState currentWeaponState => _currentWeapon.weaponState;
 
 		private void Start()
@@ -96,12 +96,12 @@ namespace TopdownShooter.Weapons
 					_attackTimer.currentTime += Time.deltaTime;
 					if (_attackTimer.currentTime >= _attackTimer.endTime)
 					{
-						if (_currentWeapon.isAmmoEmpty)
-							_currentWeapon.weaponState = WeaponState.AmmoEmpty;
-						else if (_currentWeapon.isMagazineEmtpy)
+						if(!_currentWeapon.isMagazineEmtpy)
+							_currentWeapon.weaponState = WeaponState.Attackable;
+						else if(!_currentWeapon.isAmmoEmpty)
 							_currentWeapon.weaponState = WeaponState.MagazineAmmoEmpty;
 						else
-							_currentWeapon.weaponState = WeaponState.Attackable;
+							_currentWeapon.weaponState = WeaponState.AmmoEmpty;
 
 						_attackEndCallback?.Invoke();
 					}
@@ -121,7 +121,7 @@ namespace TopdownShooter.Weapons
 
 		public bool Attack(Action attackEndCallBack = null)
 		{
-			if(_currentWeapon.Attack(aimDiraction))
+			if (_currentWeapon.Attack(aimDiraction))
 			{
 				_attackTimer.currentTime = 0.0f;
 				_attackEndCallback = attackEndCallBack;
@@ -147,7 +147,8 @@ namespace TopdownShooter.Weapons
 			aimDiraction = aim;
 			var theta = Mathf.Atan2(aimDiraction.y, aimDiraction.x) * Mathf.Rad2Deg;
 			handPivot.rotation = Quaternion.Euler(0, 0, theta);
-			_currentWeapon.renderer.flipY = (theta >= 90.0f && theta <= 180.0f) || (theta <= -90.0f && theta >= -180.0f) ? true : false;
+			bool flipY = (theta >= 90.0f && theta <= 180.0f) || (theta <= -90.0f && theta >= -180.0f) ? true : false;
+			_currentWeapon.SetFlipY(flipY);
 		}
 
 		public bool CanAttack()

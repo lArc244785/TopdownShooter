@@ -333,7 +333,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BpuQGp_10
+      name: MuzzleFlash_0
       rect:
         serializedVersion: 2
         x: 0
@@ -354,7 +354,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BpuQGp_11
+      name: MuzzleFlash_1
       rect:
         serializedVersion: 2
         x: 80
@@ -375,7 +375,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BpuQGp_12
+      name: MuzzleFlash_2
       rect:
         serializedVersion: 2
         x: 160
@@ -383,7 +383,7 @@ TextureImporter:
         width: 40
         height: 50
       alignment: 9
-      pivot: {x: 0, y: 0.5}
+      pivot: {x: 0, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -396,13 +396,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BpuQGp_13
+      name: MuzzleFlash_4
       rect:
         serializedVersion: 2
-        x: 240
-        y: 35
-        width: 10
-        height: 10
+        x: 305
+        y: 10
+        width: 40
+        height: 55
       alignment: 9
       pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -412,27 +412,6 @@ TextureImporter:
       bones: []
       spriteID: 9db5a860325a3e948a83265dbd614268
       internalID: -927800107
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BpuQGp_14
-      rect:
-        serializedVersion: 2
-        x: 320
-        y: 40
-        width: 10
-        height: 10
-      alignment: 9
-      pivot: {x: 0, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2878eafca0cf359419eb2c202e3cbe3e
-      internalID: -1586773073
       vertices: []
       indices: 
       edges: []
@@ -480,85 +459,22 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BpuQGp_17
+      name: MuzzleFlash_3
       rect:
         serializedVersion: 2
-        x: 250
-        y: 30
-        width: 10
-        height: 5
-      alignment: 9
-      pivot: {x: 0, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 540dbb8ff7d0e254cae4f05dec014ec8
-      internalID: 386559116
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BpuQGp_18
-      rect:
-        serializedVersion: 2
-        x: 335
-        y: 25
-        width: 10
-        height: 10
-      alignment: 9
-      pivot: {x: 0, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 14944fb8b5f826246bb4bb3e0cd3de52
-      internalID: -593126712
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BpuQGp_19
-      rect:
-        serializedVersion: 2
-        x: 245
+        x: 220
         y: 15
-        width: 10
-        height: 10
+        width: 40
+        height: 50
       alignment: 9
-      pivot: {x: 0, y: 0.5}
+      pivot: {x: 0, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ed86c73a8b671f54ab6c5385185f6c5c
-      internalID: -32649683
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BpuQGp_20
-      rect:
-        serializedVersion: 2
-        x: 325
-        y: 10
-        width: 10
-        height: 10
-      alignment: 9
-      pivot: {x: 0, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 22cb3a56cf1c2354fa70f8cd6fc207cd
-      internalID: 1777874395
+      spriteID: a501b87480ad0fc4abfb8b2c60cfb050
+      internalID: 252307790
       vertices: []
       indices: 
       edges: []
@@ -576,10 +492,6 @@ TextureImporter:
     nameFileIdTable:
       BpuQGp_0: 701700225
       BpuQGp_1: 1693245024
-      BpuQGp_10: 817204700
-      BpuQGp_11: -1344847460
-      BpuQGp_12: 167668410
-      BpuQGp_13: -927800107
       BpuQGp_14: -1586773073
       BpuQGp_15: -1375303918
       BpuQGp_16: 506364771
@@ -595,6 +507,11 @@ TextureImporter:
       BpuQGp_7: 106337283
       BpuQGp_8: 981237343
       BpuQGp_9: -1650014725
+      MuzzleFlash_0: 817204700
+      MuzzleFlash_1: -1344847460
+      MuzzleFlash_2: 167668410
+      MuzzleFlash_3: 252307790
+      MuzzleFlash_4: -927800107
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

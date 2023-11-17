@@ -1,6 +1,4 @@
-﻿using System;
-using TopdownShooter.Characters;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TopdownShooter.Weapons
 {
@@ -9,6 +7,16 @@ namespace TopdownShooter.Weapons
 
 		[SerializeField] Projectile _projectile;
 		[SerializeField] private Transform _firePoint;
+		[SerializeField] private Vector2 _flipTrueFireLocalPosition;
+		[SerializeField] private Vector2 _flipFalsFireLocalPosition;
+		private SpriteRenderer _muzzleFlashSpriteRenderer;
+
+
+		protected override void Awake()
+		{
+			base.Awake();
+			_muzzleFlashSpriteRenderer = _firePoint.GetComponent<SpriteRenderer>();
+		}
 
 		public override bool Attack(Vector2 attackDiraction)
 		{
@@ -21,7 +29,16 @@ namespace TopdownShooter.Weapons
 
 			UseMagazineAmmo(1);
 
+			CameraEffect.instance.CameraShake(3.0f, 1.0f, 0.1f);
+
 			return true;
+		}
+
+		public override void SetFlipY(bool y)
+		{
+			renderer.flipY = y;
+			_muzzleFlashSpriteRenderer.flipY = y;
+			//_firePoint.localPosition = y ? _flipTrueFireLocalPosition : _flipFalsFireLocalPosition;
 		}
 	}
 }

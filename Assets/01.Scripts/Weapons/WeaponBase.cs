@@ -29,8 +29,10 @@ namespace TopdownShooter.Weapons
 
 		[SerializeField] public bool isInfiniteAmmo;
 
-		public bool canReload => (weaponState == WeaponState.Attackable && magazineAmmoValue < maxMagazineAmmo) ||
-								  weaponState == WeaponState.MagazineAmmoEmpty;
+		public bool canReload => weaponState == WeaponState.Attackable &&
+								 magazineAmmoValue < maxMagazineAmmo ||
+								 weaponState == WeaponState.MagazineAmmoEmpty;
+								  
 		public float damage => Random.RandomRange(_minDamage, _maxDamage);
 
 		public float attackTime => _attackTime;
@@ -170,21 +172,14 @@ namespace TopdownShooter.Weapons
 			Debug.Log($"{weaponName} Reload");
 			weaponState = WeaponState.Attackable;
 
-			//가지고 있는 탄약에서 최재 장탄수를 빼본다.
-			bool inputMaxAmmo = ammoValue - maxMagazineAmmo > 0 ? true : false;
-			int ammo = maxMagazineAmmo;
+			//필요탄을 계산한다.
+			//필요탄수 만큼 탄이 있는지 확인한다.
+			//있다면 탄창에 추가, 탄약에서는 빼준다.
+			int needAmmo = maxMagazineAmmo - magazineAmmoValue;
+			int inputAmmo = ammoValue - needAmmo > 0 ? needAmmo : ammoValue;
 
-			if (!inputMaxAmmo)
-			{
-				ammo = ammoValue;
-			}
-
-			//탄이 남아있는 경우
-			if(ammo > 0)
-			{
-				AddMagazineAmmo(ammo);
-				UseAmmo(ammo);
-			}
+			AddMagazineAmmo(inputAmmo);
+			UseAmmo(inputAmmo);
 
 			onReloadFinsh?.Invoke();
 		}
@@ -199,5 +194,7 @@ namespace TopdownShooter.Weapons
 		{
 			magazineAmmoValue -= amount;
 		}
+
+		public abstract void SetFlipY(bool y);
 	}
 }
