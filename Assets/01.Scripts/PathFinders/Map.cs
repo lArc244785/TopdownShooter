@@ -81,10 +81,10 @@ namespace TopdownShooter.Pathfinders
 				{
 					isVisitable = false;
 					Vector2 rayPoint = point + Vector2.right * cellSizeX * j;
-					var col = Physics2D.OverlapPoint(rayPoint, _mapLayer);
-					if (col != null)
+					var col = Physics2D.OverlapPointAll(rayPoint, _mapLayer);
+					if (col != null && col.Length == 1)
 					{
-						if (col.gameObject.layer == groundLayer && col.gameObject.tag != "NotMoveable")
+						if (col[0].gameObject.layer == groundLayer && col[0].gameObject.tag != "NotMoveable")
 							isVisitable = true;
 					}
 

@@ -23,7 +23,7 @@ TagManager:
   - PickUpItem
   - MapObjectCollision
   - InteractionObject
-  - 
+  - LowWall
   - 
   - 
   - 
@@ -48,15 +48,15 @@ TagManager:
   - name: Wall
     uniqueID: 13802789
     locked: 0
+  - name: WallDeco
+    uniqueID: 12921055
+    locked: 0
   - name: BackDeco
     uniqueID: 2430147829
     locked: 0
   - name: Actor
     uniqueID: 386750355
     locked: 0
-  - name: FrontDeco_A
+  - name: FrontDeco
     uniqueID: 2432086115
-    locked: 0
-  - name: FrontDeco_B
-    uniqueID: 1610368595
     locked: 0
