@@ -1,6 +1,7 @@
 using UnityEngine;
 using TopdownShooter.Weapons;
 using TopdownShooter.Interactions;
+using TopdownShooter.UIs;
 
 namespace TopdownShooter.Characters
 {
@@ -9,6 +10,7 @@ namespace TopdownShooter.Characters
 		[SerializeField] private CharacterController _characterController;
 		[SerializeField] private WeaponController _weaponController;
 		[HideInInspector] public bool isInputable;
+		[SerializeField] private GameOptionPopUp _gameOptionPopUp;
 
 		private IIteraction _interaction; 
 
@@ -22,12 +24,20 @@ namespace TopdownShooter.Characters
 			if (!isInputable)
 				return;
 
+			if (Input.GetKeyDown(KeyCode.Escape))
+				_gameOptionPopUp.OptionPopUp();
+
+			if (_gameOptionPopUp.IsVisable)
+				return;
+
 			Interaction();
 			Move();
 			MouseLook();
 			Attack();
 			Reload();
 			WeaponChange();
+
+
 		}
 
 		private void Move()
