@@ -8,7 +8,7 @@ namespace TopdownShooter.FSM
 
 		public override CharacterStateID id => CharacterStateID.Hurt;
 
-		public override bool canExecute => !controller.invincible && controller.hpValue > controller.minHp;
+		public override bool canExecute => controller.hpValue > controller.minHp;
 
 		public override void OnStateEnter()
 		{

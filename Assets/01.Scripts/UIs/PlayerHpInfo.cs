@@ -4,28 +4,42 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using CharacterController = TopdownShooter.Characters.CharacterController;
+using Image = UnityEngine.UI.Image;
 
 namespace TopdownShooter.UIs
 {
 	public class PlayerHpInfo : MonoBehaviour
 	{
 		[SerializeField] private CharacterController _controller;
-		[SerializeField] private UnityEngine.UI.Slider _slider;
-		[SerializeField] private TextMeshProUGUI _textHp;
+		[SerializeField] private Image _imgHpBarValue;
+
+		private float _minValue;
+		private float _maxValue;
+		private float _value;
+
+		private float GetRatio()
+		{
+			if (_value <= _minValue)
+				return 0.0f;
+
+			var ratio = _value / _maxValue;
+
+			return ratio;
+		}
 
 		private void Start()
 		{
 			var hp = (IHP)_controller;
 
-			_slider.maxValue = hp.maxHp;
-			_slider.minValue = hp.minHp;
-			_slider.value = hp.hpValue;
-			_textHp.text = $"{_slider.value} / {_slider.maxValue}";
+			_minValue = hp.minHp;
+			_maxValue = hp.maxHp;
+			_value = hp.hpValue;
+			_imgHpBarValue.fillAmount = GetRatio();
 
 			hp.onHpChanged += (value) =>
 			{
-				_slider.value = value;
-				_textHp.text = $"{_slider.value} / {_slider.maxValue}";
+				_value = value;
+				_imgHpBarValue.fillAmount = GetRatio();
 			};
 		}
 	}

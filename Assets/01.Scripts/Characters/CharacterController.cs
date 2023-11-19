@@ -1,13 +1,12 @@
 using System;
 using TopdownShooter.FSM;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace TopdownShooter.Characters
 {
-	public class CharacterController : MonoBehaviour , IHP
+	public class CharacterController : MonoBehaviour, IHP
 	{
-		
+
 		public float horizontal
 		{
 			get
@@ -67,12 +66,12 @@ namespace TopdownShooter.Characters
 				if (value != hpValue)
 					onHpChanged?.Invoke(value);
 
-				_hpValue = Mathf.Clamp(value,minHp, maxHp);
-				
+				_hpValue = Mathf.Clamp(value, minHp, maxHp);
+
 				if (_hpValue == maxHp)
 					onHpMax?.Invoke();
 
-				if(_hpValue == minHp)
+				if (_hpValue == minHp)
 					onHpMin?.Invoke();
 			}
 		}
@@ -126,7 +125,7 @@ namespace TopdownShooter.Characters
 
 		private void LookUpdate(float look)
 		{
-			if(!isLookable)
+			if (!isLookable)
 				return;
 
 			_lookDirection = look;
@@ -145,8 +144,11 @@ namespace TopdownShooter.Characters
 
 		public virtual void DeleteHp(object subject, float amount)
 		{
-			hpValue -= amount;
+			if (invincible)
+				return;
+
 			onHpDelete?.Invoke(amount);
+			hpValue -= amount;
 		}
 
 		public void OnDead()

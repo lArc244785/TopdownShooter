@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 3195099772897620398}
   - component: {fileID: 7284453364205953228}
   m_Layer: 10
-  m_Name: Enemy
+  m_Name: Enemy_Mini_B_Projection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,7 +218,7 @@ MonoBehaviour:
   isMoveable: 1
   isLookable: 1
   _lookDirection: 0
-  _maxHp: 1
+  _maxHp: 4
   _aiState: 0
   _randomMoveTimer:
     endTime: 1
@@ -226,7 +226,7 @@ MonoBehaviour:
   _pursueTimer:
     endTime: 0
     currentTime: 0
-  _targetPursueDistance: 13.97
+  _targetPursueDistance: 20
   _followRange: 5.5
   _weaponController: {fileID: 3195099772897620398}
   _attackWaitTimer:
@@ -379,10 +379,10 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 386750355
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1592188556, guid: 72f0deaa7858d0d4284a8e112ae6e1a7, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.9640565, a: 1}
+  m_Sprite: {fileID: 1129961006, guid: 72f0deaa7858d0d4284a8e112ae6e1a7, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -402,7 +402,7 @@ Animator:
   m_GameObject: {fileID: 7067992616419160891}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 717afb32441586446bb39218fefd5759, type: 2}
+  m_Controller: {fileID: 9100000, guid: 75fdbf16326ed3a4a93873d40b850311, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

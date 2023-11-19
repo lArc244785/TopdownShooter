@@ -1,5 +1,6 @@
 using UnityEngine;
 using TopdownShooter.Weapons;
+using TopdownShooter.Interactions;
 
 namespace TopdownShooter.Characters
 {
@@ -8,6 +9,8 @@ namespace TopdownShooter.Characters
 		[SerializeField] private CharacterController _characterController;
 		[SerializeField] private WeaponController _weaponController;
 		[HideInInspector] public bool isInputable;
+
+		private IIteraction _interaction; 
 
 		private void Awake()
 		{
@@ -19,6 +22,7 @@ namespace TopdownShooter.Characters
 			if (!isInputable)
 				return;
 
+			Interaction();
 			Move();
 			MouseLook();
 			Attack();
@@ -58,6 +62,24 @@ namespace TopdownShooter.Characters
 				_weaponController?.ChangeWeapon(0);
 			if (Input.GetKeyDown(KeyCode.Alpha2))
 				_weaponController?.ChangeWeapon(1);
+		}
+
+		public void SetInteraction(IIteraction interaction)
+		{
+			_interaction = interaction;
+		}
+
+		private void Interaction()
+		{
+			if (_interaction == null)
+				return;
+
+			if(Input.GetKeyDown(KeyCode.F))
+			{
+				_interaction.Interaction();
+				_interaction = null;
+			}
+				
 		}
 	}
 

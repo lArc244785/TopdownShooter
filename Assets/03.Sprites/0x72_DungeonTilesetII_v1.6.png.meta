@@ -4940,7 +4940,7 @@ TextureImporter:
         width: 8
         height: 9
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4961,7 +4961,7 @@ TextureImporter:
         width: 8
         height: 9
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4969,6 +4969,174 @@ TextureImporter:
       bones: []
       spriteID: 758489184c5eaa04f812941ff1337fca
       internalID: 1666669705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossA_0
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 48
+        width: 23
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce3d82cd85c3ef54b932d19afc72b568
+      internalID: -489999008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossA_1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 48
+        width: 23
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 253d14cea2c317d4c9d4115fbe3376f0
+      internalID: 226130552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossA_2
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 48
+        width: 22
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0a61585288536c4dadaf675499aa6b6
+      internalID: -98921999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossA_3
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 48
+        width: 26
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e262ef66b95523479cb80163c8acc63
+      internalID: 1005558864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossA_4
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 48
+        width: 23
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64449584225734a499a178b7ce9a4a16
+      internalID: -30945852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossA_5
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 48
+        width: 23
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b42bd61d197e884cae61b8e2ff3ab7e
+      internalID: -1486455383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossA_6
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 48
+        width: 23
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9fb2d859c2374a4a93595d68b37734e
+      internalID: -1262688067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossA_7
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 48
+        width: 23
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bcf4c51035613d4e92846d8829c5f82
+      internalID: -1731497628
       vertices: []
       indices: 
       edges: []
@@ -4986,7 +5154,6 @@ TextureImporter:
     nameFileIdTable:
       0x72_DungeonTilesetII_v1.6_0: 816122997
       0x72_DungeonTilesetII_v1.6_1: 1007036960
-      0x72_DungeonTilesetII_v1.6_10: -98921999
       0x72_DungeonTilesetII_v1.6_100: -1783864405
       0x72_DungeonTilesetII_v1.6_101: -2044042224
       0x72_DungeonTilesetII_v1.6_102: -569745828
@@ -4997,7 +5164,6 @@ TextureImporter:
       0x72_DungeonTilesetII_v1.6_107: 1346629958
       0x72_DungeonTilesetII_v1.6_108: 979805238
       0x72_DungeonTilesetII_v1.6_109: -783228981
-      0x72_DungeonTilesetII_v1.6_11: 1005558864
       0x72_DungeonTilesetII_v1.6_110: 2007366313
       0x72_DungeonTilesetII_v1.6_111: -263002170
       0x72_DungeonTilesetII_v1.6_112: -50885518
@@ -5074,7 +5240,6 @@ TextureImporter:
       0x72_DungeonTilesetII_v1.6_177: 381622700
       0x72_DungeonTilesetII_v1.6_178: 1837754147
       0x72_DungeonTilesetII_v1.6_179: -1405701544
-      0x72_DungeonTilesetII_v1.6_18: -30945852
       0x72_DungeonTilesetII_v1.6_180: 1513403588
       0x72_DungeonTilesetII_v1.6_181: 374444140
       0x72_DungeonTilesetII_v1.6_182: -748429364
@@ -5085,7 +5250,6 @@ TextureImporter:
       0x72_DungeonTilesetII_v1.6_187: 2123415337
       0x72_DungeonTilesetII_v1.6_188: 322190333
       0x72_DungeonTilesetII_v1.6_189: 2146620241
-      0x72_DungeonTilesetII_v1.6_19: -1486455383
       0x72_DungeonTilesetII_v1.6_190: 236323912
       0x72_DungeonTilesetII_v1.6_191: 2883173
       0x72_DungeonTilesetII_v1.6_192: -1376228804
@@ -5097,7 +5261,6 @@ TextureImporter:
       0x72_DungeonTilesetII_v1.6_198: -414556324
       0x72_DungeonTilesetII_v1.6_199: 1203745815
       0x72_DungeonTilesetII_v1.6_2: -1801559004
-      0x72_DungeonTilesetII_v1.6_20: -1262688067
       0x72_DungeonTilesetII_v1.6_200: 395867896
       0x72_DungeonTilesetII_v1.6_201: -1930972295
       0x72_DungeonTilesetII_v1.6_202: -1775895329
@@ -5108,7 +5271,6 @@ TextureImporter:
       0x72_DungeonTilesetII_v1.6_207: -268790102
       0x72_DungeonTilesetII_v1.6_208: -1631109411
       0x72_DungeonTilesetII_v1.6_209: -1445614709
-      0x72_DungeonTilesetII_v1.6_21: -1731497628
       0x72_DungeonTilesetII_v1.6_210: 1138926261
       0x72_DungeonTilesetII_v1.6_211: 935594544
       0x72_DungeonTilesetII_v1.6_212: -632970471
@@ -5592,7 +5754,6 @@ TextureImporter:
       0x72_DungeonTilesetII_v1.6_77: -42922021
       0x72_DungeonTilesetII_v1.6_78: 237157177
       0x72_DungeonTilesetII_v1.6_79: -1325983316
-      0x72_DungeonTilesetII_v1.6_8: -489999008
       0x72_DungeonTilesetII_v1.6_80: 1999418243
       0x72_DungeonTilesetII_v1.6_81: -1416384971
       0x72_DungeonTilesetII_v1.6_82: 1899692935
@@ -5603,7 +5764,6 @@ TextureImporter:
       0x72_DungeonTilesetII_v1.6_87: -1924309186
       0x72_DungeonTilesetII_v1.6_88: -1139952652
       0x72_DungeonTilesetII_v1.6_89: 725581879
-      0x72_DungeonTilesetII_v1.6_9: 226130552
       0x72_DungeonTilesetII_v1.6_90: -1603792835
       0x72_DungeonTilesetII_v1.6_91: -1133379069
       0x72_DungeonTilesetII_v1.6_92: -569583421
@@ -5614,6 +5774,14 @@ TextureImporter:
       0x72_DungeonTilesetII_v1.6_97: 950024876
       0x72_DungeonTilesetII_v1.6_98: 1201698586
       0x72_DungeonTilesetII_v1.6_99: -2018378926
+      BossA_0: -489999008
+      BossA_1: 226130552
+      BossA_2: -98921999
+      BossA_3: 1005558864
+      BossA_4: -30945852
+      BossA_5: -1486455383
+      BossA_6: -1262688067
+      BossA_7: -1731497628
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

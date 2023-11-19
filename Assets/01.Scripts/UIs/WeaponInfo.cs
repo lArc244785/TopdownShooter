@@ -9,22 +9,22 @@ namespace TopdownShooter.UIs
 	public class WeaponInfo : MonoBehaviour
 	{
 		[SerializeField] private WeaponController _weaponController;
-		[SerializeField] private Image _imageWeapon;
 		[SerializeField] private TextMeshProUGUI _textWeaponName;
 		[SerializeField] private TextMeshProUGUI _textWeaponAmmo;
 
 		private WeaponBase _currentWeapon;
 		private int _magazineAmmoValue;
 		private int _ammoValue;
+		private bool _isInfinity;
 
 		private void Awake()
 		{
 			_weaponController.onChangeWeapon += (oldWeapon, newWeapon) =>
 			{
-				_imageWeapon.sprite = newWeapon.renderer.sprite;
 				_textWeaponName.text = newWeapon.weaponName;
 				_magazineAmmoValue = newWeapon.magazineAmmoValue;
 				_ammoValue = newWeapon.ammoValue;
+				_isInfinity = newWeapon.isInfiniteAmmo;
 				UpdateWeaponAmmo();
 
 				if(oldWeapon != null)
@@ -40,7 +40,8 @@ namespace TopdownShooter.UIs
 
 		private void UpdateWeaponAmmo()
 		{
-			_textWeaponAmmo.text = $"{_magazineAmmoValue} / {_ammoValue}";
+			string _ammo = _isInfinity ? "¡Ä" : _ammoValue.ToString();
+			_textWeaponAmmo.text = $"{_magazineAmmoValue} / {_ammo}";
 		}
 
 		private void SetAmmo(int amount)

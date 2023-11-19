@@ -9,13 +9,13 @@ namespace TopdownShooter.Weapons
 		[SerializeField] private Transform _firePoint;
 		[SerializeField] private Vector2 _flipTrueFireLocalPosition;
 		[SerializeField] private Vector2 _flipFalsFireLocalPosition;
-		private SpriteRenderer _muzzleFlashSpriteRenderer;
+		//private SpriteRenderer _muzzleFlashSpriteRenderer;
 
 
 		protected override void Awake()
 		{
 			base.Awake();
-			_muzzleFlashSpriteRenderer = _firePoint.GetComponent<SpriteRenderer>();
+			//_muzzleFlashSpriteRenderer = _firePoint.GetComponent<SpriteRenderer>();
 		}
 
 		public override bool Attack(Vector2 attackDiraction)
@@ -37,7 +37,7 @@ namespace TopdownShooter.Weapons
 		public override void SetFlipY(bool y)
 		{
 			renderer.flipY = y;
-			_muzzleFlashSpriteRenderer.flipY = y;
+			//_muzzleFlashSpriteRenderer.flipY = y;
 			//_firePoint.localPosition = y ? _flipTrueFireLocalPosition : _flipFalsFireLocalPosition;
 		}
 	}

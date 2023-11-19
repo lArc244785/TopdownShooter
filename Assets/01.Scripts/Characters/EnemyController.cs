@@ -55,6 +55,7 @@ namespace TopdownShooter.Characters
 		{
 			base.Awake();
 			_rayMask = _targetLayer | _cantMoveLayer;
+			onDead += () => gameObject.SetActive(false);
 		}
 
 		protected override void Start()
@@ -153,7 +154,10 @@ namespace TopdownShooter.Characters
 			// Follow 범위에 Target 있는가?
 			var target = Physics2D.OverlapCircle(transform.position, _followRange, _targetLayer);
 			if (target == null)
+			{
+				_aiState = _aiState == AIState.Follow ? AIState.RandomMove : _aiState;
 				return;
+			}
 
 			// 직선 방향으로 Target 에게 이동이 가능한가?
 			var rayDir = (target.transform.position - transform.position).normalized;

@@ -35,23 +35,20 @@ namespace TopdownShooter.Weapons
 		private void FixedUpdate()
 		{
 			Vector2 nextMovePoint = (Vector2)transform.position + (_diraction * _speed * Time.fixedDeltaTime);
-			var hits = Physics2D.OverlapPointAll(nextMovePoint, _targetMask);
-			
-			if(hits.Length == 0)
+			var hit = Physics2D.OverlapPoint(nextMovePoint, _targetMask);
+
+			if (hit != null)
 			{
-				transform.position = nextMovePoint;
+				if(hit.TryGetComponent<IHP>(out var hp))
+				{
+					Debug.Log($"Hit Owner{_owner.gameObject.name}");
+					hp.DeleteHp(_owner, _damage);
+				}
+				DestroyProjectile();
 			}
 			else
 			{
-				foreach (var hit in hits)
-				{
-					if (hit.TryGetComponent<IHP>(out var hp))
-					{
-						Debug.Log($"Hit Owner{_owner.gameObject.name}");
-						hp.DeleteHp(_owner, _damage);
-					}
-				}
-				DestroyProjectile();
+				transform.position = nextMovePoint;
 			}
 		}
 

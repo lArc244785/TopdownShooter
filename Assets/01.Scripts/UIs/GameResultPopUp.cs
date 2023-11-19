@@ -15,13 +15,13 @@ namespace TopdownShooter.UIs
 
 		private void Awake()
 		{
-			_buttonContinue.onClick.AddListener(() => SceneManager.LoadScene(0));
 			_buttonExit.onClick.AddListener(() => EditorApplication.isPlaying = false) ;
 			gameObject.SetActive(false);
 		}
 
-		public void PopUpResult(bool isGameClear, int scroe)
+		public void PopUpResult(bool isGameClear, int scroe, string nextStage)
 		{
+			_buttonContinue.onClick.AddListener(() => SceneManager.LoadScene(nextStage));
 			gameObject.SetActive(true);
 			string gameResult = isGameClear ? "game clear" : "game over";
 			_textGameResult.text = gameResult;

@@ -18,6 +18,7 @@ namespace TopdownShooter.GameTargets
 		public event Action onAllTargetComplete;
 
 		public static GameTargetManager instance { get; private set; }
+		[field: SerializeField] public string nextStage { private set; get; }
 
 		private void Awake()
 		{
