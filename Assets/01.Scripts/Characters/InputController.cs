@@ -1,7 +1,7 @@
-using UnityEngine;
-using TopdownShooter.Weapons;
 using TopdownShooter.Interactions;
 using TopdownShooter.UIs;
+using TopdownShooter.Weapons;
+using UnityEngine;
 
 namespace TopdownShooter.Characters
 {
@@ -12,7 +12,7 @@ namespace TopdownShooter.Characters
 		[HideInInspector] public bool isInputable;
 		[SerializeField] private GameOptionPopUp _gameOptionPopUp;
 
-		private IIteraction _interaction; 
+		private IIteraction _interaction;
 
 		private void Awake()
 		{
@@ -24,11 +24,14 @@ namespace TopdownShooter.Characters
 			if (!isInputable)
 				return;
 
-			if (Input.GetKeyDown(KeyCode.Escape))
-				_gameOptionPopUp.OptionPopUp();
+			if (_gameOptionPopUp != null)
+			{
+				if (Input.GetKeyDown(KeyCode.Escape))
+					_gameOptionPopUp.OptionPopUp();
 
-			if (_gameOptionPopUp.IsVisable)
-				return;
+				if (_gameOptionPopUp.IsVisable)
+					return;
+			}
 
 			Interaction();
 			Move();
@@ -84,12 +87,12 @@ namespace TopdownShooter.Characters
 			if (_interaction == null)
 				return;
 
-			if(Input.GetKeyDown(KeyCode.F))
+			if (Input.GetKeyDown(KeyCode.F))
 			{
 				_interaction.Interaction();
 				_interaction = null;
 			}
-				
+
 		}
 	}
 

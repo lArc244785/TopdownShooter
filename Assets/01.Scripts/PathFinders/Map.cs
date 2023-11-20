@@ -40,6 +40,10 @@ namespace TopdownShooter.Pathfinders
 			}
 		}
 
+		public Vector2 cellSize => _grid.cellSize;
+		public Vector2 offset => _offset;
+		public Vector2 size => _size;
+
 		private void Awake()
 		{
 			Init();

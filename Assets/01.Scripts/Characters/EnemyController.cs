@@ -64,6 +64,7 @@ namespace TopdownShooter.Characters
 			_pathFinder = new PathfFinderAStar();
 			machine = new EnemyMachine(this);
 			_aiState = AIState.RandomMove;
+			MiniMap.instance?.ReginsterObject(transform, MiniMapIconType.Enemy);
 		}
 
 		protected override void Update()

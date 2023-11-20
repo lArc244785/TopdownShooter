@@ -37,5 +37,10 @@ namespace TopdownShooter.GameTargets
 			}
 		}
 
+		private void Start()
+		{
+			MiniMap.instance?.ReginsterObject(transform, MiniMapIconType.Target);
+		}
+
 	}
 }

@@ -15,6 +15,12 @@ namespace TopdownShooter.Characters
 			onHpDelete += (value) => StartCoroutine(C_Invincible());
 		}
 
+		protected override void Start()
+		{
+			base.Start();
+			MiniMap.instance?.ReginsterObject(transform, MiniMapIconType.Player);
+		}
+
 
 		private IEnumerator C_Invincible()
 		{

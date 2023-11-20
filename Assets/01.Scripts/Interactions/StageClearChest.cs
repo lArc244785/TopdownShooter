@@ -18,6 +18,10 @@ namespace TopdownShooter.Interactions
 		{
 			_interactionCanvas.SetActive(false);
 		}
+		private void Start()
+		{
+			MiniMap.instance?.ReginsterObject(transform, MiniMapIconType.Target);
+		}
 
 		public void Interaction()
 		{
