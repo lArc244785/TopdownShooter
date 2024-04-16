@@ -85,7 +85,7 @@ namespace TopdownShooter.Pathfinders
 				}
 			}
 
-			Debug.Log($"현재 노드 ({currentNode.index.x},{currentNode.index.y})\n 추가된 노드들\n" + addPath);
+			//Debug.Log($"현재 노드 ({currentNode.index.x},{currentNode.index.y})\n 추가된 노드들\n" + addPath);
 
 		}
 	}

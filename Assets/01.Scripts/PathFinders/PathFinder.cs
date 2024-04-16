@@ -6,6 +6,7 @@ namespace TopdownShooter.Pathfinders
 {
 	public abstract class PathFinder
 	{
+
 		protected enum StraightMove
 		{
 			None = -1,
@@ -49,7 +50,7 @@ namespace TopdownShooter.Pathfinders
 
 		public PathFinder()
 		{
-			visitNodeList = new();
+			visitNodeList = new(1000);
 			openPathTable = new bool[Map.Instance.totalY, Map.Instance.totalX];
 		}
 

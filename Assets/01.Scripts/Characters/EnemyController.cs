@@ -3,6 +3,7 @@ using TopdownShooter.FSM;
 using TopdownShooter.Pathfinders;
 using TopdownShooter.Weapons;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 namespace TopdownShooter.Characters
@@ -156,33 +157,24 @@ namespace TopdownShooter.Characters
 				{
 					return;
 				}
-
 				//추격이 가능한 경우 목표까지의 경로 계산
 				if (_pathFinder.TryGetPath(transform.position, target.transform.position, out _paths))
 				{
 					_index = 0;
+#if UNITY_EDITOR
 					if (_isDebug == true)
 					{
 						for (int i = 1; i < _paths.Length; i++)
 						{
-							Debug.DrawLine(_paths[i - 1], _paths[i], Color.white, 0.5f);
+							Debug.DrawLine(_paths[i - 1], _paths[i], Color.white, 10.0f);
 						}
 					}
-
+#endif
 					//이동을 시작한다.
 					NextPurserPathDirlation();
 					_aiState = AIState.Pursue;
 				}
 			}
-		}
-
-		private bool IsTargetPathArrived(Vector2 current, Vector2 prev, Vector2 target)
-		{
-			float c2p = Vector2.Distance(current, prev);
-			float c2t = Vector2.Distance(current, target);
-			float p2t = Vector2.Distance(prev, target);
-
-			return (c2t + p2t == c2p);
 		}
 
 

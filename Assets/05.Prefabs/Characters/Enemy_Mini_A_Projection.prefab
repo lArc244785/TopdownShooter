@@ -226,7 +226,7 @@ MonoBehaviour:
   _pursueTimer:
     endTime: 0
     currentTime: 0
-  _targetPursueDistance: 20
+  _targetPursueDistance: 100
   _followRange: 5.5
   _weaponController: {fileID: 3195099772897620398}
   _attackWaitTimer:
