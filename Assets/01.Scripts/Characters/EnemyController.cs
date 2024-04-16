@@ -1,7 +1,9 @@
+using System;
 using TopdownShooter.FSM;
 using TopdownShooter.Pathfinders;
 using TopdownShooter.Weapons;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TopdownShooter.Characters
 {
@@ -18,12 +20,16 @@ namespace TopdownShooter.Characters
 
 	public class EnemyController : CharacterController
 	{
+		[SerializeField] protected bool _isDebug;
+
 		[SerializeField] private AIState _aiState;
+		private AIState _prevAiState;
+
 		//RandomMove
 		[SerializeField] private Timer _randomMoveTimer;
 
 		//Purse
-		[SerializeField] private Timer _pursueTimer;
+		//[SerializeField] private Timer _pursueTimer;
 		[SerializeField] private float _targetPursueDistance;
 
 		//Follow
@@ -48,7 +54,19 @@ namespace TopdownShooter.Characters
 		private Vector2 _diraction;
 		private Vector2 _nextMovePosition;
 
+		private Vector2 _prevPosition;
+
 		private LayerMask _rayMask;
+
+		/// <summary>
+		/// 현재가야되는 경로의 도착지에 도착한 경우 호출됩니다.
+		/// </summary>
+		private event Action OnArrivedPath;
+
+		/// <summary>
+		/// 마지막 Path 위치까지 도달할 때 호출됩니다.
+		/// </summary>
+		private event Action OnFinsedPath;
 
 
 		protected override void Awake()
@@ -56,6 +74,9 @@ namespace TopdownShooter.Characters
 			base.Awake();
 			_rayMask = _targetLayer | _cantMoveLayer;
 			onDead += () => gameObject.SetActive(false);
+
+			OnArrivedPath += NextPurserPathDirlation;
+			OnFinsedPath += ArrivedPath;
 		}
 
 		protected override void Start()
@@ -75,6 +96,11 @@ namespace TopdownShooter.Characters
 
 		}
 
+		private void LateUpdate()
+		{
+			_prevAiState = _aiState;
+		}
+
 		private void AIUpdate()
 		{
 			if (machine.currentID == CharacterStateID.Hurt ||
@@ -85,6 +111,8 @@ namespace TopdownShooter.Characters
 			Pursue();
 			Follow();
 			RandomMove();
+
+			_prevPosition = transform.position;
 		}
 
 		private void RandomMove()
@@ -110,6 +138,7 @@ namespace TopdownShooter.Characters
 			}
 		}
 
+		//추격
 		void Pursue()
 		{
 			if (_aiState == AIState.Attack ||
@@ -119,33 +148,43 @@ namespace TopdownShooter.Characters
 				return;
 			}
 
-			var target = Physics2D.OverlapCircle(transform.position, _targetPursueDistance, _targetLayer);
-
-			if (_aiState != AIState.Pursue && target != null)
+			//이전 상태가 추격이 아닌 경우
+			if (_prevAiState != AIState.Pursue)
 			{
-				_pursueTimer.currentTime = 0.0f;
-				_aiState = AIState.Pursue;
-			}
-			else if (target != null)
-			{
-				_pursueTimer.currentTime += Time.deltaTime;
-				if (_pursueTimer.currentTime >= _pursueTimer.endTime)
+				var target = Physics2D.OverlapCircle(transform.position, _targetPursueDistance, _targetLayer);
+				if (target == null)
 				{
-					_pursueTimer.currentTime = 0.0f;
+					return;
+				}
 
-					if (_pathFinder.TryGetPath(transform.position, target.transform.position, out _paths))
+				//추격이 가능한 경우 목표까지의 경로 계산
+				if (_pathFinder.TryGetPath(transform.position, target.transform.position, out _paths))
+				{
+					_index = 0;
+					if (_isDebug == true)
 					{
 						for (int i = 1; i < _paths.Length; i++)
 						{
-							Debug.DrawLine(_paths[i - 1], _paths[i], Color.white, 1.0f);
+							Debug.DrawLine(_paths[i - 1], _paths[i], Color.white, 0.5f);
 						}
-
-						_index = 1;
-						PathDiractionUpdate();
 					}
+
+					//이동을 시작한다.
+					NextPurserPathDirlation();
+					_aiState = AIState.Pursue;
 				}
 			}
 		}
+
+		private bool IsTargetPathArrived(Vector2 current, Vector2 prev, Vector2 target)
+		{
+			float c2p = Vector2.Distance(current, prev);
+			float c2t = Vector2.Distance(current, target);
+			float p2t = Vector2.Distance(prev, target);
+
+			return (c2t + p2t == c2p);
+		}
+
 
 
 		private void Follow()
@@ -251,10 +290,20 @@ namespace TopdownShooter.Characters
 		}
 
 
-		private void PathDiractionUpdate()
+		private void NextPurserPathDirlation()
 		{
-			if (_paths == null || _index >= _paths.Length)
-				throw new System.Exception($"경로가 없거나 최종 목적에 도착하고 다음 방향을 찾고자 시도하였습니다.");
+			if (_paths == null)
+			{
+				throw new SystemException("Error: [EnemyController] Path is null");
+			}
+			_index++;
+
+			//더 이상 경로가 없는 경우
+			if (_index == _paths.Length)
+			{
+				OnFinsedPath?.Invoke();
+				return;
+			}
 
 			_currentTargetPos = _paths[_index];
 			_diraction = (_currentTargetPos - (Vector2)transform.position).normalized;
@@ -268,8 +317,10 @@ namespace TopdownShooter.Characters
 				return;
 
 
-			if (_aiState == AIState.Pursue && _paths != null)
+			if (_aiState == AIState.Pursue)
+			{
 				PurseMove();
+			}
 			else
 			{
 				var dir = new Vector2(horizontal, vertical);
@@ -294,20 +345,23 @@ namespace TopdownShooter.Characters
 			else
 			{
 				rig2D.position = _currentTargetPos;
-				_index++;
-				if (_index == _paths.Length)
-				{
-					_paths = null;
-					horizontal = 0.0f;
-					vertical = 0.0f;
-					_aiState = AIState.RandomMove;
-				}
-				else
-					PathDiractionUpdate();
+				OnArrivedPath?.Invoke();
 			}
 		}
+
+		private void ArrivedPath()
+		{
+			_paths = null;
+			horizontal = 0.0f;
+			vertical = 0.0f;
+			_aiState = AIState.RandomMove;
+		}
+
 		private void OnDrawGizmosSelected()
 		{
+			if (_isDebug == false)
+				return;
+
 			Gizmos.color = Color.blue;
 			Gizmos.DrawWireSphere(transform.position, _targetPursueDistance);
 
