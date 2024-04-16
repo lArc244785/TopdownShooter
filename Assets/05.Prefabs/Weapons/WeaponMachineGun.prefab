@@ -305,7 +305,7 @@ MonoBehaviour:
   _maxDamage: 3
   _attackTime: 0.025
   _reloadTime: 1.5
-  isInfiniteAmmo: 0
+  isInfiniteAmmo: 1
   <weaponState>k__BackingField: 0
   _maxMagazineAmmo: 100
   _maxAmmo: 200

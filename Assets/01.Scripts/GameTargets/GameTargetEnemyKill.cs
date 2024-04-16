@@ -19,6 +19,21 @@ namespace TopdownShooter.GameTargets
 
 		private bool _isCompelte;
 
+		private void Awake()
+		{
+			EnemyController[] enemys = GetComponentsInChildren<EnemyController>();
+
+			if (enemys != null)
+			{
+				m_enemyList.Clear();
+				foreach (var enemy in enemys)
+				{
+					m_enemyList.Add(enemy);
+				}
+				_targetKill = m_enemyList.Count;
+			}
+		}
+
 		private void Start()
 		{
 			foreach(var enemy in m_enemyList) 

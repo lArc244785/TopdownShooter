@@ -37,11 +37,6 @@ namespace TopdownShooter.Characters
 		#endregion
 
 		[SerializeField] private float _lookDirection;
-		public float lookDirection
-		{
-			set { _lookDirection = value; }
-			get { return _lookDirection; }
-		}
 
 		public Vector2 move { get; protected set; }
 		public Rigidbody2D rig2D { private set; get; }
@@ -123,7 +118,7 @@ namespace TopdownShooter.Characters
 			rig2D.transform.position += (Vector3)move;
 		}
 
-		private void LookUpdate(float look)
+		protected void LookUpdate(float look)
 		{
 			if (!isLookable)
 				return;

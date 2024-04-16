@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TopdownShooter.FSM;
+using TopdownShooter.Weapons;
 using UnityEngine;
 
 namespace TopdownShooter.Characters
@@ -19,6 +20,7 @@ namespace TopdownShooter.Characters
 		{
 			base.Start();
 			MiniMap.instance?.ReginsterObject(transform, MiniMapIconType.Player);
+			GetComponent<WeaponController>().OnFireing += LookUpdate;
 		}
 
 

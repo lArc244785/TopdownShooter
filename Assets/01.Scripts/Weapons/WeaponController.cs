@@ -32,6 +32,8 @@ namespace TopdownShooter.Weapons
 
 		public WeaponState currentWeaponState => _currentWeapon.weaponState;
 
+		public Action<float> OnFireing;
+
 		private void Start()
 		{
 			_owner = GetComponent<CharacterController>();
@@ -104,6 +106,7 @@ namespace TopdownShooter.Weapons
 							_currentWeapon.weaponState = WeaponState.AmmoEmpty;
 
 						_attackEndCallback?.Invoke();
+						OnFireing?.Invoke(aimDiraction.x);
 					}
 					break;
 
