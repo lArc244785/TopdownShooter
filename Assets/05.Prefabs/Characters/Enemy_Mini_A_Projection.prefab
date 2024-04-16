@@ -219,12 +219,10 @@ MonoBehaviour:
   isLookable: 1
   _lookDirection: 0
   _maxHp: 3
+  _isDebug: 0
   _aiState: 0
   _randomMoveTimer:
     endTime: 1
-    currentTime: 0
-  _pursueTimer:
-    endTime: 0
     currentTime: 0
   _targetPursueDistance: 100
   _followRange: 5.5
@@ -232,7 +230,7 @@ MonoBehaviour:
   _attackWaitTimer:
     endTime: 0.8
     currentTime: 0
-  _attackRange: 3.5
+  _attackRange: 8
   _target: {fileID: 0}
   _targetLayer:
     serializedVersion: 2
