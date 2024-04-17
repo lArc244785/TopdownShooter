@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TopdownShooter.Characters;
@@ -21,6 +22,9 @@ namespace TopdownShooter
 
 		private const int MAXSCORE = 100;
 
+		public event Action OnClear;
+		public event Action OnOver;
+
 		// Start is called before the first frame update
 		void Start()
 		{
@@ -33,6 +37,15 @@ namespace TopdownShooter
 			_playerInput.isInputable = false;
 			_player.Stop();
 			_resultPopUp.PopUpResult(isGameClear, score, _nextStageName);
+
+			if(isGameClear == true)
+			{
+				OnClear?.Invoke();
+			}
+			else
+			{
+				OnOver?.Invoke();
+			}
 		}
 		
 		private int CalculationScore()

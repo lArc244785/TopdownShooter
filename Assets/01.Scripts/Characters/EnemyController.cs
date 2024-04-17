@@ -291,7 +291,7 @@ namespace TopdownShooter.Characters
 			_index++;
 
 			//더 이상 경로가 없는 경우
-			if (_index == _paths.Length)
+			if (_index >= _paths.Length/2)
 			{
 				OnFinsedPath?.Invoke();
 				return;

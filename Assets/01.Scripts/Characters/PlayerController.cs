@@ -20,7 +20,7 @@ namespace TopdownShooter.Characters
 		{
 			base.Start();
 			MiniMap.instance?.ReginsterObject(transform, MiniMapIconType.Player);
-			GetComponent<WeaponController>().OnFireing += LookUpdate;
+			
 		}
 
 

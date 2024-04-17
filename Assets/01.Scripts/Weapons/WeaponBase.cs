@@ -169,7 +169,7 @@ namespace TopdownShooter.Weapons
 
 		public void Reload()
 		{
-			Debug.Log($"{weaponName} Reload");
+			//Debug.Log($"{weaponName} Reload");
 			weaponState = WeaponState.Attackable;
 
 			//필요탄을 계산한다.

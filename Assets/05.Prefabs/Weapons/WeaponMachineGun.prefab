@@ -263,6 +263,8 @@ GameObject:
   - component: {fileID: 7742144721568966086}
   - component: {fileID: 3246261476599101237}
   - component: {fileID: 8598418389263239758}
+  - component: {fileID: 8388484315229456611}
+  - component: {fileID: 303777801721653597}
   m_Layer: 8
   m_Name: WeaponMachineGun
   m_TagString: Untagged
@@ -347,3 +349,128 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8388484315229456611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6380462602651616655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 439dcb3a73d648147bf3847a5c86a733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioSource: {fileID: 303777801721653597}
+  weapon: {fileID: 7742144721568966086}
+  _fires:
+  - {fileID: 8300000, guid: e8688c48ff5f835419919229ab9c13ce, type: 3}
+  - {fileID: 8300000, guid: 00ea2873c58cce04fbe22364e6e66eaf, type: 3}
+  - {fileID: 8300000, guid: cd1b930f2cda8d84099c5cd0fe4f2165, type: 3}
+  - {fileID: 8300000, guid: 0b70c142a1aeb7346b6688249a688c92, type: 3}
+  _reloadStart:
+  - {fileID: 8300000, guid: 28e59959882d179459abeea840b645df, type: 3}
+  - {fileID: 8300000, guid: 292234d6420465348ab4e5f09e90725c, type: 3}
+  - {fileID: 8300000, guid: 4a439069eaa43cc4ca18e2021aa7fdd6, type: 3}
+  - {fileID: 8300000, guid: e9120eb8188900449ac162b5aebaaf2c, type: 3}
+  _reloadFinsh:
+  - {fileID: 8300000, guid: 43b68fa6e6581cc4d8534f5afcc5f859, type: 3}
+  - {fileID: 8300000, guid: 54f86bf0769a63342a672d7f3096fb37, type: 3}
+  - {fileID: 8300000, guid: 6bacba6d8f6cdc54087725b346a583c2, type: 3}
+  - {fileID: 8300000, guid: 5fa71ebb053161340947863d1c6e8e78, type: 3}
+--- !u!82 &303777801721653597
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6380462602651616655}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.8
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

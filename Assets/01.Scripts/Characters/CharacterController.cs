@@ -1,5 +1,6 @@
 using System;
 using TopdownShooter.FSM;
+using TopdownShooter.Weapons;
 using UnityEngine;
 
 namespace TopdownShooter.Characters
@@ -96,6 +97,7 @@ namespace TopdownShooter.Characters
 			onHpMin += () => machine.ChangeState(CharacterStateID.Die);
 			onHpDelete += (value) => machine.ChangeState(CharacterStateID.Hurt);
 			onDead += () => gameObject.SetActive(false);
+			GetComponent<WeaponController>().OnFireing += LookUpdate;
 		}
 
 		protected virtual void Update()

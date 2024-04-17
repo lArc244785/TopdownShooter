@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 9058465556549837839}
   - component: {fileID: 3195099772897620398}
   - component: {fileID: 7284453364205953228}
+  - component: {fileID: 5007194563304132126}
   m_Layer: 10
   m_Name: Enemy_Mini_A_Projection
   m_TagString: Untagged
@@ -273,6 +274,20 @@ MonoBehaviour:
   _items:
   - {fileID: 110223898336810618, guid: 4ee7367c6fa454048838ef7a4fea3559, type: 3}
   - {fileID: 6954245807443115196, guid: 12686c9a0accd3e4ab1ba29c4722d1b9, type: 3}
+--- !u!114 &5007194563304132126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6018169835466596930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4e0517b6470fd84d861deee11d92353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hpDown: {fileID: 0}
+  _die: {fileID: 8300000, guid: ed2c6e80b5eb47e4989a4e08b6dab4ff, type: 3}
 --- !u!1 &6553974338434650003
 GameObject:
   m_ObjectHideFlags: 0

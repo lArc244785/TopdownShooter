@@ -15,15 +15,15 @@ namespace TopdownShooter.Items
 
 	public abstract class ItemBase : MonoBehaviour
 	{
+		[SerializeField] private AudioClip _effectSound;
 		public abstract ItemType Type { get; }
 
 		public virtual bool Effect(Collider2D collider)
 		{
-			onEffect?.Invoke();
+			collider.GetComponent<CharacterSound>().Play(_effectSound);
 			gameObject.SetActive(false);
 			return true;
 		}
-		public event Action onEffect;
 	}
 
 }

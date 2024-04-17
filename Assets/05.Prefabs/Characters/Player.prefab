@@ -49,6 +49,8 @@ GameObject:
   - component: {fileID: 2719886169503518357}
   - component: {fileID: 4331017036154509820}
   - component: {fileID: 1681403442090570383}
+  - component: {fileID: 2985715374555582075}
+  - component: {fileID: 5883463613013235667}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -167,8 +169,8 @@ MonoBehaviour:
   <handPivot>k__BackingField: {fileID: 2875387974260675649}
   _currentWeapon: {fileID: 0}
   _weaponList:
-  - {fileID: 9170874534760059857}
   - {fileID: 580026234806128966}
+  - {fileID: 9170874534760059857}
   - {fileID: 931605247775040516}
   _hitMask:
     serializedVersion: 2
@@ -191,7 +193,7 @@ MonoBehaviour:
   isMoveable: 1
   isLookable: 1
   _lookDirection: 0
-  _maxHp: 50
+  _maxHp: 10
   _invincibleTime:
     endTime: 1
     currentTime: 0
@@ -207,6 +209,116 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9ae6191a7f1a3419ab843f47c18572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2985715374555582075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916521231636785361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4e0517b6470fd84d861deee11d92353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hpDown: {fileID: 8300000, guid: bd8a45b8bec367c4bab8bf1938022f14, type: 3}
+  _die: {fileID: 8300000, guid: 474f5b12833b9124aaca040c989f2e58, type: 3}
+--- !u!82 &5883463613013235667
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916521231636785361}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7971978755625886708
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,6 +532,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2681466918438907343}
     m_Modifications:
+    - target: {fileID: 303777801721653597, guid: c85a6e46b1c3085468dd59798465feb3, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3515813050116094571, guid: c85a6e46b1c3085468dd59798465feb3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -463,6 +579,10 @@ PrefabInstance:
     - target: {fileID: 6380462602651616655, guid: c85a6e46b1c3085468dd59798465feb3, type: 3}
       propertyPath: m_Name
       value: WeaponMachineGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742144721568966086, guid: c85a6e46b1c3085468dd59798465feb3, type: 3}
+      propertyPath: _attackTime
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -540,6 +660,66 @@ PrefabInstance:
     - target: {fileID: 4451672941422041539, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadFinsh.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadStart.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadFinsh.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: b408f789ac2608a439bc552b16f68369, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadFinsh.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 633ca826c360a3742b61281fc1b6fde0, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadFinsh.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: eb25652f9d34fd8419acfaf1d2dda815, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadFinsh.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: af1b70aa52a96f74da38c51197ce5685, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadFinsh.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 4151b90ab727e84498821d24313e7d1c, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadFinsh.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: 80980668ec199f14eb2a7be83376547d, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadFinsh.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: e546f5f919d087b4dbc274d52397d494, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadStart.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9d9e756267241c74aad3e4c1466f2895, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadStart.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 4cb5d9909e072d1429ffdc546ec6e27d, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadStart.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 69e6e947541c829488795ca05c689d6f, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadStart.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 11dfa8ffbbbfee2429aa997ac8af4870, type: 3}
+    - target: {fileID: 4629147291355089006, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: _reloadStart.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3bbec2b19a2c10248ad75cbffbff8369, type: 3}
+    - target: {fileID: 5867150810860626765, guid: c3e8fbc31201a664f825ee23ffa11196, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
