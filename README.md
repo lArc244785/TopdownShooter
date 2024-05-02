@@ -3,8 +3,10 @@
 ### 환경
 - Engine : Unity
 - Target Device : PC
-### 개발 기간
+### 개발 정보
 - 23.11.03 ~ 23.11.20 (Day 18)
+- 인원: 1명
+- [시연 영상](https://youtu.be/9yiz4gIMeQY)
 ### 핵심 코드
 - [Map](https://github.com/lArc244785/TopdownShooter/blob/main/Assets/01.Scripts/PathFinders/Map.cs)
 - [Node](https://github.com/lArc244785/TopdownShooter/blob/main/Assets/01.Scripts/PathFinders/Node.cs)
