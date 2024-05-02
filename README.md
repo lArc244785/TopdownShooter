@@ -5,7 +5,7 @@
 - Target Device : PC
 ### 개발 기간
 - 23.11.03 ~ 23.11.20 (Day 18)
-### Code
+### 핵심 코드
 - [Map](https://github.com/lArc244785/TopdownShooter/blob/main/Assets/01.Scripts/PathFinders/Map.cs)
 - [Node](https://github.com/lArc244785/TopdownShooter/blob/main/Assets/01.Scripts/PathFinders/Node.cs)
 - [Path Finder](https://github.com/lArc244785/TopdownShooter/blob/main/Assets/01.Scripts/PathFinders/PathFinder.cs)
