@@ -51,42 +51,28 @@ namespace TopdownShooter.Pathfinders
 		public PathFinder()
 		{
 			visitNodeList = new(1000);
-			openPathTable = new bool[Map.Instance.totalY, Map.Instance.totalX];
+			openPathTable = new bool[Map.Instance.TotalY, Map.Instance.TotalX];
 		}
 
 		public void ResetPath()
 		{
 			visitNodeList.Clear();
 
-			for (int i = 0; i < Map.Instance.totalY; i++)
+			for (int i = 0; i < Map.Instance.TotalY; i++)
 			{
-				for (int j = 0; j < Map.Instance.totalX; j++)
+				for (int j = 0; j < Map.Instance.TotalX; j++)
 				{
-					openPathTable[i, j] = Map.Instance[i, j].isVisitable;
+					openPathTable[i, j] = Map.Instance[i, j].IsVisitable;
 				}
 			}
 		}
 
 		public abstract bool TryGetPath(Vector2 startPos,Vector2 targetPos, out Vector2[] paths);
 
-		//protected virtual void OnDrawGizmosSelected()
-		//{
-		//	if (visitNodeList == null)
-		//		return;
-
-		//	Gizmos.color = Color.yellow;
-
-		//	foreach(var node in visitNodeList)
-		//	{
-		//		Gizmos.DrawCube(node.position, Vector3.one * 0.3f);
-		//	}
-
-		//}
-
 		private bool IsNodeExistence(Node.Index index)
 		{
-			if (index.x < 0 || index.x >= Map.Instance.totalX) return false;
-			if (index.y < 0 || index.y >= Map.Instance.totalY) return false;
+			if (index.x < 0 || index.x >= Map.Instance.TotalX) return false;
+			if (index.y < 0 || index.y >= Map.Instance.TotalY) return false;
 
 			return true;
 		}
@@ -96,7 +82,7 @@ namespace TopdownShooter.Pathfinders
 		/// </summary>
 		private bool CanNodeMoveable(Node.Index index)
 		{
-			return IsNodeExistence(index) && Map.Instance[index].isVisitable && openPathTable[index.y, index.x];
+			return IsNodeExistence(index) && Map.Instance[index].IsVisitable && openPathTable[index.y, index.x];
 		}
 
 

@@ -5,8 +5,6 @@ namespace TopdownShooter.Pathfinders
 {
 	public class PathFinderDFS : PathFinder
 	{
-
-
 		public override bool TryGetPath(Vector2 startPos, Vector2 targetPos, out Vector2[] paths)
 		{
 			ResetPath();
@@ -25,12 +23,12 @@ namespace TopdownShooter.Pathfinders
 
 
 			visitNodeList.Add(startNode);
-			openPathTable[startNode.index.y, startNode.index.x] = false;
-			
+			openPathTable[startNode.Point.y, startNode.Point.x] = false;
+
 			while (openPath.Count > 0 && !isFound)
 			{
 				Node node = openPath.Pop();
-				isFound = node.index == targetNode.index;
+				isFound = node.Point == targetNode.Point;
 				if (!isFound)
 					UpdateMoveablePaths(in openPath, node);
 				else
@@ -45,8 +43,8 @@ namespace TopdownShooter.Pathfinders
 
 			while (pathNode != null)
 			{
-				pathList.Add(pathNode.position);	
-				pathNode = pathNode.parent;
+				pathList.Add(pathNode.Position);
+				pathNode = pathNode.Parent;
 			}
 
 			pathList.Reverse();
@@ -57,8 +55,7 @@ namespace TopdownShooter.Pathfinders
 
 		private void UpdateMoveablePaths(in Stack<Node> openPath, Node currentNode)
 		{
-			Node.Index point = currentNode.index;
-			string addPath = null;
+			Node.Index point = currentNode.Point;
 
 			for (int i = MOVE_DIR_LENGTH - 1; i >= 0; i--)
 			{
@@ -66,27 +63,22 @@ namespace TopdownShooter.Pathfinders
 				{
 					Node.Index nextIndex = point + diagonalMoveDir[i];
 					Node visitNode = Map.Instance[nextIndex].GetClone();
-					visitNode.parent = currentNode;
+					visitNode.Parent = currentNode;
 					visitNodeList.Add(visitNode);
 					openPathTable[nextIndex.y, nextIndex.x] = false;
 					openPath.Push(visitNode);
-					addPath += $"({visitNode.index.x} , {visitNode.index.y})\n";
 				}
 
 				if (CanMoveStraight(point, (StraightMove)i))
 				{
 					Node.Index nextIndex = point + straightMoveDir[i];
 					Node visitNode = Map.Instance[nextIndex].GetClone();
-					visitNode.parent = currentNode;
+					visitNode.Parent = currentNode;
 					visitNodeList.Add(visitNode);
 					openPathTable[nextIndex.y, nextIndex.x] = false;
 					openPath.Push(visitNode);
-					addPath += $"({visitNode.index.x} , {visitNode.index.y})\n";
 				}
 			}
-
-			//Debug.Log($"현재 노드 ({currentNode.index.x},{currentNode.index.y})\n 추가된 노드들\n" + addPath);
-
 		}
 	}
 }

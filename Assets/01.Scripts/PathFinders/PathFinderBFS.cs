@@ -5,8 +5,6 @@ namespace TopdownShooter.Pathfinders
 {
 	public class PathFinderBFS : PathFinder
 	{
-
-
 		public override bool TryGetPath(Vector2 startPos, Vector2 targetPos, out Vector2[] paths)
 		{
 			ResetPath();
@@ -22,15 +20,15 @@ namespace TopdownShooter.Pathfinders
 			openPath.Enqueue(startNode);
 
 			visitNodeList.Add(startNode);
-			openPathTable[startNode.index.y, startNode.index.x] = false;
-			
+			openPathTable[startNode.Point.y, startNode.Point.x] = false;
+
 			bool isFound = false;
 			Node endNode = null;
-			
+
 			while (openPath.Count > 0 && !isFound)
 			{
 				Node node = openPath.Dequeue();
-				isFound = node.index == targetNode.index;
+				isFound = node.Point == targetNode.Point;
 				if (!isFound)
 					UpdateMoveablePaths(in openPath, node);
 				else
@@ -45,8 +43,8 @@ namespace TopdownShooter.Pathfinders
 
 			while (pathNode != null)
 			{
-				pathList.Add(pathNode.position);
-				pathNode = pathNode.parent;
+				pathList.Add(pathNode.Position);
+				pathNode = pathNode.Parent;
 			}
 
 			pathList.Reverse();
@@ -57,7 +55,7 @@ namespace TopdownShooter.Pathfinders
 
 		private void UpdateMoveablePaths(in Queue<Node> openPath, Node currentNode)
 		{
-			Node.Index point = currentNode.index;
+			Node.Index point = currentNode.Point;
 
 			for (int i = 0; i < MOVE_DIR_LENGTH; i++)
 			{
@@ -66,7 +64,7 @@ namespace TopdownShooter.Pathfinders
 				{
 					Node.Index nextIndex = point + straightMoveDir[i];
 					Node visitNode = Map.Instance[nextIndex].GetClone();
-					visitNode.parent = currentNode;
+					visitNode.Parent = currentNode;
 					visitNodeList.Add(visitNode);
 					openPathTable[nextIndex.y, nextIndex.x] = false;
 					openPath.Enqueue(visitNode);
@@ -77,15 +75,12 @@ namespace TopdownShooter.Pathfinders
 				{
 					Node.Index nextIndex = point + diagonalMoveDir[i];
 					Node visitNode = Map.Instance[nextIndex].GetClone();
-					visitNode.parent = currentNode;
+					visitNode.Parent = currentNode;
 					visitNodeList.Add(visitNode);
 					openPathTable[nextIndex.y, nextIndex.x] = false;
 					openPath.Enqueue(visitNode);
 				}
 			}
-
-
-
 		}
 	}
 }

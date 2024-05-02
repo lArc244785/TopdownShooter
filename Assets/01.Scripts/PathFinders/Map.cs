@@ -1,29 +1,9 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace TopdownShooter.Pathfinders
 {
 	public class Map : MonoBehaviour
 	{
-
-		[SerializeField] private Vector2 _size;
-		[SerializeField] private Vector2 _offset;
-		[SerializeField] private LayerMask _mapLayer;
-		private Grid _grid;
-
-		private Vector2 _origin;
-		private Vector2 _end;
-		public int totalY { get; private set; }
-		public int totalX { get; private set; }
-
-		private Node[,] _map;
-
-		public Node this[Node.Index index] => _map[index.y, index.x];
-		public Node this[int y, int x] => _map[y, x];
-
-		private Vector2 _bottomLeft;
-
-		private static Map _instance;
 		public static Map Instance
 		{
 			get
@@ -40,9 +20,26 @@ namespace TopdownShooter.Pathfinders
 			}
 		}
 
-		public Vector2 cellSize => _grid.cellSize;
-		public Vector2 offset => _offset;
-		public Vector2 size => _size;
+		public Vector2 CellSize => _grid.cellSize;
+		public Vector2 Offset => _offset;
+		public Vector2 Size => _size;
+
+		public int TotalY { get; private set; }
+		public int TotalX { get; private set; }
+		public Node this[Node.Index index] => _map[index.y, index.x];
+		public Node this[int y, int x] => _map[y, x];
+
+		[SerializeField] private Vector2 _size;
+		[SerializeField] private Vector2 _offset;
+		[SerializeField] private LayerMask _mapLayer;
+
+		private Node[,] _map;
+		private Grid _grid;
+		private Vector2 _origin;
+		private Vector2 _end;
+		private Vector2 _bottomLeft;
+
+		private static Map _instance;
 
 		private void Awake()
 		{
@@ -56,6 +53,9 @@ namespace TopdownShooter.Pathfinders
 			Instance = this;
 		}
 
+		/// <summary>
+		/// 설정한 영역에 맞추어서 맵 데이터를 생성합니다.
+		/// </summary>
 		private void SetUp()
 		{
 			Vector2 center = (Vector2)transform.position + _offset;
@@ -68,20 +68,20 @@ namespace TopdownShooter.Pathfinders
 			float cellSizeX = _grid.cellSize.x;
 			float cellSizeY = _grid.cellSize.y;
 
-			totalY = (int)((_end.y - _origin.y) / _grid.cellSize.y) + 1;
-			totalX = (int)((_end.x - _origin.x) / _grid.cellSize.x) + 1;
+			TotalY = (int)((_end.y - _origin.y) / _grid.cellSize.y) + 1;
+			TotalX = (int)((_end.x - _origin.x) / _grid.cellSize.x) + 1;
 
-			_map = new Node[totalY, totalX];
+			_map = new Node[TotalY, TotalX];
 
 			Vector2 point = _origin;
 			bool isVisitable;
 
 			int groundLayer = LayerMask.NameToLayer("Ground");
 
-			for (int i = 0; i < totalY; i++)
+			for (int i = 0; i < TotalY; i++)
 			{
 				point = _origin + Vector2.up * cellSizeY * i;
-				for (int j = 0; j < totalX; j++)
+				for (int j = 0; j < TotalX; j++)
 				{
 					isVisitable = false;
 					Vector2 rayPoint = point + Vector2.right * cellSizeX * j;
@@ -97,6 +97,9 @@ namespace TopdownShooter.Pathfinders
 			}
 		}
 
+		/// <summary>
+		/// 현재 위치가 노드가 존재하는 위치인 경우 노드를 반환합니다.
+		/// </summary>
 		public bool TryGetNode(Vector2 position, out Node node)
 		{
 			node = null;
@@ -108,7 +111,7 @@ namespace TopdownShooter.Pathfinders
 			var localPos = position - _bottomLeft;
 			int y = (int)(localPos.y / _grid.cellSize.y);
 			int x = (int)(localPos.x / _grid.cellSize.x);
-			
+
 			node = _map[y, x];
 
 			return true;
@@ -122,12 +125,12 @@ namespace TopdownShooter.Pathfinders
 			if (_map == null)
 				return;
 
-			for (int i = 0; i < totalY; i++)
+			for (int i = 0; i < TotalY; i++)
 			{
-				for (int j = 0; j < totalX; j++)
+				for (int j = 0; j < TotalX; j++)
 				{
-					Gizmos.color = _map[i, j].isVisitable ? Color.green : Color.red;
-					Gizmos.DrawCube(_map[i, j].position, Vector2.one * 0.2f);
+					Gizmos.color = _map[i, j].IsVisitable ? Color.green : Color.red;
+					Gizmos.DrawCube(_map[i, j].Position, Vector2.one * 0.2f);
 				}
 			}
 		}

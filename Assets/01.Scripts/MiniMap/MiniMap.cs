@@ -59,25 +59,25 @@ namespace TopdownShooter
 			if (Map.Instance == null)
 				throw new System.Exception("Map Instance is Null");
 
-			var center = (Vector2)transform.position + Map.Instance.offset;
-			Vector2 bottomLeft = center - (Map.Instance.size * 0.5f);
-			Vector2 origin = bottomLeft + (Map.Instance.cellSize * 0.5f);
+			var center = (Vector2)transform.position + Map.Instance.Offset;
+			Vector2 bottomLeft = center - (Map.Instance.Size * 0.5f);
+			Vector2 origin = bottomLeft + (Map.Instance.CellSize * 0.5f);
 
-			Vector2 topRight = center + (Map.Instance.size * 0.5f);
-			Vector2 end = topRight - (Map.Instance.size * 0.5f);
+			Vector2 topRight = center + (Map.Instance.Size * 0.5f);
+			Vector2 end = topRight - (Map.Instance.Size * 0.5f);
 
 
-			for (int i = 0; i < Map.Instance.totalY; i++)
+			for (int i = 0; i < Map.Instance.TotalY; i++)
 			{
-				Vector2 point = origin + Vector2.up * Map.Instance.cellSize.y * i;
-				for (int j = 0; j < Map.Instance.totalX; j++)
+				Vector2 point = origin + Vector2.up * Map.Instance.CellSize.y * i;
+				for (int j = 0; j < Map.Instance.TotalX; j++)
 				{
-					Vector2 spawnPoint = point + Vector2.right * Map.Instance.cellSize.x * j;
-					if (Map.Instance[i,j].isVisitable || CanWallTileInstance(new(j, i)))
+					Vector2 spawnPoint = point + Vector2.right * Map.Instance.CellSize.x * j;
+					if (Map.Instance[i,j].IsVisitable || CanWallTileInstance(new(j, i)))
 					{
 						var tile = Instantiate(_prefabTile, spawnPoint, Quaternion.identity);
 						tile.transform.parent = transform;
-						tile.color = Map.Instance[i, j].isVisitable ? _groundColor : _wallColor;
+						tile.color = Map.Instance[i, j].IsVisitable ? _groundColor : _wallColor;
 					}
 
 				}
@@ -92,12 +92,12 @@ namespace TopdownShooter
 			for(int i = 0; i < dir.Length; i++)
 			{
 				Vector2Int checkIndex = point + dir[i];
-				if (checkIndex.x < 0 || checkIndex.x >= Map.Instance.totalX)
+				if (checkIndex.x < 0 || checkIndex.x >= Map.Instance.TotalX)
 					continue;
-				if (checkIndex.y < 0 || checkIndex.y >= Map.Instance.totalY)
+				if (checkIndex.y < 0 || checkIndex.y >= Map.Instance.TotalY)
 					continue;
 
-				if (Map.Instance[checkIndex.y, checkIndex.x].isVisitable)
+				if (Map.Instance[checkIndex.y, checkIndex.x].IsVisitable)
 				{
 					isInstanceWallTile = true;
 					break;
