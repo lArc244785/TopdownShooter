@@ -4,6 +4,10 @@ namespace TopdownShooter.Pathfinders
 {
 	public class Map : MonoBehaviour
 	{
+		#region Property
+		/// <summary>
+		/// Map 싱글톤 인스턴스
+		/// </summary>
 		public static Map Instance
 		{
 			get
@@ -20,32 +24,98 @@ namespace TopdownShooter.Pathfinders
 			}
 		}
 
+		/// <summary>
+		/// Map의 World공간에서의 CellSize
+		/// </summary>
 		public Vector2 CellSize => _grid.cellSize;
-		public Vector2 Offset => _offset;
-		public Vector2 Size => _size;
 
+		/// <summary>
+		/// World에서 맵 위치 Offset
+		/// </summary>
+		[field: SerializeField] public Vector2 Offset { get; private set; }
+
+		/// <summary>
+		/// Map의 크기
+		/// </summary>
+		[field: SerializeField] public Vector2 Size { get; private set; }
+
+		/// <summary>
+		/// Map의 Y축의 갯수
+		/// </summary>
 		public int TotalY { get; private set; }
+
+		/// <summary>
+		/// Map의 X축의 갯수
+		/// </summary>
 		public int TotalX { get; private set; }
-		public Node this[Node.Index index] => _map[index.y, index.x];
+
+		/// <summary>
+		/// Map에 Node를 Node.Index를 통해서 접근합니다.
+		/// </summary>
+		/// <param name="index"></param>
+		public Node this[Index index] => _map[index.y, index.x];
+
+		/// <summary>
+		/// Map의 Node를 [y,x]를 통해서 접근합니다.
+		/// </summary>
 		public Node this[int y, int x] => _map[y, x];
+		#endregion
 
-		[SerializeField] private Vector2 _size;
-		[SerializeField] private Vector2 _offset;
-		[SerializeField] private LayerMask _mapLayer;
 
-		private Node[,] _map;
-		private Grid _grid;
-		private Vector2 _origin;
-		private Vector2 _end;
-		private Vector2 _bottomLeft;
-
+		#region Field
+		/// <summary>
+		/// 맵 인스턴스
+		/// </summary>
 		private static Map _instance;
 
+		/// <summary>
+		/// Map 데이터
+		/// </summary>
+		private Node[,] _map;
+
+		/// <summary>
+		/// 타일맵 Cell 정보를 가지고 있습니다.
+		/// </summary>
+		private Grid _grid;
+
+		/// <summary>
+		/// 맵 데이터에 영향을 줄 레이어들을 설정합니다.
+		/// Ground  : 이동 가능 노드
+		/// Wall	: 이동 불가능 노드
+		/// </summary>
+		[SerializeField] private LayerMask _mapLayer;
+
+		/// <summary>
+		/// 맵에 왼쪽 아래에서의 끝 위치
+		/// </summary>
+		private Vector2 _bottomLeft;
+
+		/// <summary>
+		/// 맵에 오른쪽 위에서의 끝 위치
+		/// </summary>
+		private Vector2 _topRight;
+
+		/// <summary>
+		/// 맨 왼쪽 아래의 노드의 위치
+		/// </summary>
+		private Vector2 _bottomLeftNodePoint;
+
+		/// <summary>
+		/// 맨 오른쪽 위의 노드의 위치
+		/// </summary>
+		private Vector2 _topRightNodePoint;
+		#endregion
+
+
+		#region Function
 		private void Awake()
 		{
 			Init();
 		}
 
+		/// <summary>
+		/// 싱글톤에 인스턴스를 등록하고 맵을 생성을 호출합니다.
+		/// </summary>
 		public void Init()
 		{
 			_grid = GetComponent<Grid>();
@@ -58,29 +128,29 @@ namespace TopdownShooter.Pathfinders
 		/// </summary>
 		private void SetUp()
 		{
-			Vector2 center = (Vector2)transform.position + _offset;
-			_bottomLeft = center - (_size * 0.5f);
-			_origin = _bottomLeft + ((Vector2)_grid.cellSize * 0.5f);
+			Vector2 center = (Vector2)transform.position + Offset;
+			_bottomLeft = center - (Size * 0.5f);
+			_bottomLeftNodePoint = _bottomLeft + ((Vector2)_grid.cellSize * 0.5f);
 
-			Vector2 topRight = center + (_size * 0.5f);
-			_end = topRight - ((Vector2)_grid.cellSize * 0.5f);
+			_topRight = center + (Size * 0.5f);
+			_topRightNodePoint = _topRight - ((Vector2)_grid.cellSize * 0.5f);
 
 			float cellSizeX = _grid.cellSize.x;
 			float cellSizeY = _grid.cellSize.y;
 
-			TotalY = (int)((_end.y - _origin.y) / _grid.cellSize.y) + 1;
-			TotalX = (int)((_end.x - _origin.x) / _grid.cellSize.x) + 1;
+			TotalY = (int)((_topRightNodePoint.y - _bottomLeftNodePoint.y) / _grid.cellSize.y) + 1;
+			TotalX = (int)((_topRightNodePoint.x - _bottomLeftNodePoint.x) / _grid.cellSize.x) + 1;
 
 			_map = new Node[TotalY, TotalX];
 
-			Vector2 point = _origin;
+			Vector2 point = _bottomLeftNodePoint;
 			bool isVisitable;
 
 			int groundLayer = LayerMask.NameToLayer("Ground");
 
 			for (int i = 0; i < TotalY; i++)
 			{
-				point = _origin + Vector2.up * cellSizeY * i;
+				point = _bottomLeftNodePoint + Vector2.up * cellSizeY * i;
 				for (int j = 0; j < TotalX; j++)
 				{
 					isVisitable = false;
@@ -92,7 +162,7 @@ namespace TopdownShooter.Pathfinders
 							isVisitable = true;
 					}
 
-					_map[i, j] = new Node(rayPoint, new Node.Index(j, i), isVisitable);
+					_map[i, j] = new Node(rayPoint, new Index(j, i), isVisitable);
 				}
 			}
 		}
@@ -117,10 +187,14 @@ namespace TopdownShooter.Pathfinders
 			return true;
 		}
 
+#if UNITY_EDITOR
+		/// <summary>
+		/// 에디터 상에서 맵 데이터를 보여줍니다.
+		/// </summary>
 		private void OnDrawGizmosSelected()
 		{
 			Gizmos.color = Color.blue;
-			Gizmos.DrawWireCube(transform.position + (Vector3)_offset, _size);
+			Gizmos.DrawWireCube(transform.position + (Vector3)Offset, Size);
 
 			if (_map == null)
 				return;
@@ -135,5 +209,7 @@ namespace TopdownShooter.Pathfinders
 			}
 		}
 	}
+#endif
+	#endregion
 }
 

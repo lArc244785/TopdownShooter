@@ -1,12 +1,20 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace TopdownShooter.Pathfinders
 {
 	public abstract class PathFinder
 	{
+		#region Constructor
+		public PathFinder()
+		{
+			visitNodeList = new(1000);
+			openPathTable = new bool[Map.Instance.TotalY, Map.Instance.TotalX];
+		}
+		#endregion
 
+
+		#region Enum
 		protected enum StraightMove
 		{
 			None = -1,
@@ -24,36 +32,53 @@ namespace TopdownShooter.Pathfinders
 			DownLeft,
 			UpLeft,
 		}
+		#endregion
 
+
+		#region Field
+		/// <summary>
+		/// Map 데이터에서 가져온 방문 가능에 대한 정보를 복제해서 사용합니다.
+		/// </summary>
 		protected bool[,] openPathTable;
 
+		/// <summary>
+		/// 방문한 노드들의 정보를 담는 리스트입니다.
+		/// </summary>
 		protected List<Node> visitNodeList;
 
-		protected Node.Index[] straightMoveDir =
-		{
-			new Node.Index(0,1),
-			new Node.Index(1,0),
-			new Node.Index(0,-1),
-			new Node.Index(-1,0),
-		};
-
-		protected Node.Index[] diagonalMoveDir =
-		{
-			new Node.Index(1,1),
-			new Node.Index(1,-1),
-			new Node.Index(-1,-1),
-			new Node.Index(-1,1),
-		};
-
+		/// <summary>
+		/// 방향 정보들의 크기
+		/// </summary>
 		protected const int MOVE_DIR_LENGTH = 4;
 
-
-		public PathFinder()
+		/// <summary>
+		/// 직선 움직임 방향 정보들
+		/// </summary>
+		protected Index[] straightMoveDir =
 		{
-			visitNodeList = new(1000);
-			openPathTable = new bool[Map.Instance.TotalY, Map.Instance.TotalX];
-		}
+			new Index(0,1),
+			new Index(1,0),
+			new Index(0,-1),
+			new Index(-1,0),
+		};
 
+		/// <summary>
+		/// 대각 움직임 방향 정보들
+		/// </summary>
+		protected Index[] diagonalMoveDir =
+		{
+			new Index(1,1),
+			new Index(1,-1),
+			new Index(-1,-1),
+			new Index(-1,1),
+		};
+		#endregion
+
+
+		#region Method
+		/// <summary>
+		/// 방문한 노드 정보를 초기화하고 원본 맵 데이터에 맞추어 데이터를 설정합니다.
+		/// </summary>
 		public void ResetPath()
 		{
 			visitNodeList.Clear();
@@ -67,9 +92,21 @@ namespace TopdownShooter.Pathfinders
 			}
 		}
 
-		public abstract bool TryGetPath(Vector2 startPos,Vector2 targetPos, out Vector2[] paths);
+		/// <summary>
+		/// 길찾기를 시도합니다.
+		/// </summary>
+		/// <param name="startPos">시작 위치</param>
+		/// <param name="targetPos">목표 위치</param>
+		/// <param name="paths">발견한 경로 정보</param>
+		/// <returns>성공 여부</returns>
+		public abstract bool TryGetPath(Vector2 startPos, Vector2 targetPos, out Vector2[] paths);
 
-		private bool IsNodeExistence(Node.Index index)
+		/// <summary>
+		/// 해당 위치가 맵의 범위안에 있는지 확인합니다.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
+		private bool IsNodeExistence(Index index)
 		{
 			if (index.x < 0 || index.x >= Map.Instance.TotalX) return false;
 			if (index.y < 0 || index.y >= Map.Instance.TotalY) return false;
@@ -78,29 +115,33 @@ namespace TopdownShooter.Pathfinders
 		}
 
 		/// <summary>
-		///  1. 노드가 존재하는가?, 노드가 방문이 가능한가?, 노드로 가는 경로가 열려있는가?
+		///  해당 위치의 노드로 이동할 수 있는지 확인합니다.
 		/// </summary>
-		private bool CanNodeMoveable(Node.Index index)
+		private bool CanNodeMoveable(Index index)
 		{
 			return IsNodeExistence(index) && Map.Instance[index].IsVisitable && openPathTable[index.y, index.x];
 		}
 
-
-		protected bool CanMoveStraight(Node.Index currentIndex, StraightMove moveDir)
+		/// <summary>
+		/// 직선으로 이동이 가능한지 확인합니다.
+		/// </summary>
+		protected bool CanMoveStraight(Index currentIndex, StraightMove moveDir)
 		{
-			if(moveDir == StraightMove.None) return false;
-			Node.Index moveIndex = currentIndex + straightMoveDir[(int)moveDir];
+			if (moveDir == StraightMove.None) return false;
+			Index moveIndex = currentIndex + straightMoveDir[(int)moveDir];
 
 			return CanNodeMoveable(moveIndex);
 		}
 
-
-		protected bool CanMoveDiagonal(Node.Index currentIndex, DiagonalMove moveDir)
+		/// <summary>
+		/// 대각으로 이동이 가능한지 확인합니다.
+		/// </summary>
+		protected bool CanMoveDiagonal(Index currentIndex, DiagonalMove moveDir)
 		{
 			if (moveDir == DiagonalMove.None) return false;
-			Node.Index moveIndex = currentIndex + diagonalMoveDir[(int)moveDir];
+			Index moveIndex = currentIndex + diagonalMoveDir[(int)moveDir];
 
-			if(!CanNodeMoveable(moveIndex)) return false;
+			if (!CanNodeMoveable(moveIndex)) return false;
 
 			//대각 이동시 주변 타일이 존재하고 주변 타일중에 벽이 없는 경우 그리고 해당 노드가 방문을 했던 노드가 아닌경우
 
@@ -108,30 +149,30 @@ namespace TopdownShooter.Pathfinders
 			{
 				case DiagonalMove.UpRight:
 					{
-						Node.Index left = moveIndex + new Node.Index(-1, 0);
-						Node.Index down = moveIndex + new Node.Index(0, -1);
+						Index left = moveIndex + new Index(-1, 0);
+						Index down = moveIndex + new Index(0, -1);
 
-						if(!CanNodeMoveable(left))
+						if (!CanNodeMoveable(left))
 							return false;
-						if(!CanNodeMoveable(down))
+						if (!CanNodeMoveable(down))
 							return false;
-					break;
+						break;
 					}
 				case DiagonalMove.DownRight:
 					{
-						Node.Index left = moveIndex + new Node.Index(-1, 0);
-						Node.Index up = moveIndex + new Node.Index(0, 1);
+						Index left = moveIndex + new Index(-1, 0);
+						Index up = moveIndex + new Index(0, 1);
 
 						if (!CanNodeMoveable(left))
 							return false;
 						if (!CanNodeMoveable(up))
 							return false;
-					break;
+						break;
 					}
 				case DiagonalMove.DownLeft:
 					{
-						Node.Index right = moveIndex + new Node.Index(1, 0);
-						Node.Index up = moveIndex + new Node.Index(0, 1);
+						Index right = moveIndex + new Index(1, 0);
+						Index up = moveIndex + new Index(0, 1);
 
 						if (!CanNodeMoveable(right))
 							return false;
@@ -141,8 +182,8 @@ namespace TopdownShooter.Pathfinders
 					}
 				case DiagonalMove.UpLeft:
 					{
-						Node.Index right = moveIndex + new Node.Index(1, 0);
-						Node.Index down = moveIndex + new Node.Index(0, -1);
+						Index right = moveIndex + new Index(1, 0);
+						Index down = moveIndex + new Index(0, -1);
 
 						if (!CanNodeMoveable(right))
 							return false;
@@ -154,5 +195,6 @@ namespace TopdownShooter.Pathfinders
 
 			return true;
 		}
+		#endregion
 	}
 }

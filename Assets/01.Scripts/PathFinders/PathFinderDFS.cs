@@ -5,6 +5,10 @@ namespace TopdownShooter.Pathfinders
 {
 	public class PathFinderDFS : PathFinder
 	{
+		#region Method
+		/// <summary>
+		/// 발견한 노드를 우선적으로 탐색하면서 길을 찾습니다.
+		/// </summary>
 		public override bool TryGetPath(Vector2 startPos, Vector2 targetPos, out Vector2[] paths)
 		{
 			ResetPath();
@@ -53,15 +57,18 @@ namespace TopdownShooter.Pathfinders
 			return true;
 		}
 
+		/// <summary>
+		/// 현재 노드에서 다음으로 이동할 수 있는 노드를 업데이트합니다.
+		/// </summary>
 		private void UpdateMoveablePaths(in Stack<Node> openPath, Node currentNode)
 		{
-			Node.Index point = currentNode.Point;
+			Index point = currentNode.Point;
 
 			for (int i = MOVE_DIR_LENGTH - 1; i >= 0; i--)
 			{
 				if (CanMoveDiagonal(point, (DiagonalMove)i))
 				{
-					Node.Index nextIndex = point + diagonalMoveDir[i];
+					Index nextIndex = point + diagonalMoveDir[i];
 					Node visitNode = Map.Instance[nextIndex].GetClone();
 					visitNode.Parent = currentNode;
 					visitNodeList.Add(visitNode);
@@ -71,7 +78,7 @@ namespace TopdownShooter.Pathfinders
 
 				if (CanMoveStraight(point, (StraightMove)i))
 				{
-					Node.Index nextIndex = point + straightMoveDir[i];
+					Index nextIndex = point + straightMoveDir[i];
 					Node visitNode = Map.Instance[nextIndex].GetClone();
 					visitNode.Parent = currentNode;
 					visitNodeList.Add(visitNode);
@@ -80,5 +87,7 @@ namespace TopdownShooter.Pathfinders
 				}
 			}
 		}
+		#endregion
+
 	}
 }

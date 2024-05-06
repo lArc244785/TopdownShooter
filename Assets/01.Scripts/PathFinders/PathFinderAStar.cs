@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,82 +5,23 @@ namespace TopdownShooter.Pathfinders
 {
 	public class PathfFinderAStar : PathFinder
 	{
+		#region Field
 		/// <summary>
-		/// 데이터가 업데이트되면 오름차순으로 정렬됩니다.
+		/// 직선 비용
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		public class PriorityQueue<T> where T : IComparable<T>
-		{
-			private List<T> heap = new List<T>();
-
-			public void Enqueue(T item)
-			{
-				heap.Add(item);
-				int currentIndex = heap.Count - 1;
-
-				while (currentIndex > 0)
-				{
-					int parentIndex = (currentIndex - 1) / 2;
-
-					if (heap[currentIndex].CompareTo(heap[parentIndex]) >= 0)
-						break;
-
-					Swap(currentIndex, parentIndex);
-					currentIndex = parentIndex;
-				}
-			}
-
-			public T Dequeue()
-			{
-				if (heap.Count == 0)
-					throw new InvalidOperationException("Queue is empty");
-
-				T frontItem = heap[0];
-				int lastIndex = heap.Count - 1;
-				heap[0] = heap[lastIndex];
-				heap.RemoveAt(lastIndex);
-
-				int currentIndex = 0;
-
-				while (true)
-				{
-					int leftChildIndex = currentIndex * 2 + 1;
-					int rightChildIndex = currentIndex * 2 + 2;
-
-					if (leftChildIndex >= lastIndex)
-						break;
-
-					int minIndex = leftChildIndex;
-
-					if (rightChildIndex < lastIndex && heap[rightChildIndex].CompareTo(heap[leftChildIndex]) < 0)
-						minIndex = rightChildIndex;
-
-					if (heap[currentIndex].CompareTo(heap[minIndex]) <= 0)
-						break;
-
-					Swap(currentIndex, minIndex);
-					currentIndex = minIndex;
-				}
-
-				return frontItem;
-			}
-
-			public int Count
-			{
-				get { return heap.Count; }
-			}
-
-			private void Swap(int i, int j)
-			{
-				T temp = heap[i];
-				heap[i] = heap[j];
-				heap[j] = temp;
-			}
-		}
-
 		private int _straightCost = 10;
-		private int _diagonalCost = 14;
 
+		/// <summary>
+		/// 대각 비용
+		/// </summary>
+		private int _diagonalCost = 14;
+		#endregion
+
+
+		#region Method
+		/// <summary>
+		/// 가중치가 적은 노드를 우선적으로 탐색하면서 길을 찾습니다.
+		/// </summary>
 		public override bool TryGetPath(Vector2 startPos, Vector2 targetPos, out Vector2[] paths)
 		{
 			ResetPath();
@@ -140,14 +80,14 @@ namespace TopdownShooter.Pathfinders
 		/// </summary>
 		private void UpdateMoveablePaths(in PriorityQueue<Node> openPath, Node currentNode, Node targetNode)
 		{
-			Node.Index point = currentNode.Point;
+			Index point = currentNode.Point;
 
 			//대각 이동 가능 경로 확인
 			for (int i = 0; i < diagonalMoveDir.Length; i++)
 			{
 				if (CanMoveDiagonal(point, (DiagonalMove)i))
 				{
-					Node.Index nextIndex = point + diagonalMoveDir[i];
+					Index nextIndex = point + diagonalMoveDir[i];
 					Node visitNode = Map.Instance[nextIndex].GetClone();
 					int g = visitNode.Parent != null ? visitNode.Parent.Start2CurrentValue + _diagonalCost : _diagonalCost;
 					visitNode.Start2CurrentValue = g;
@@ -164,7 +104,7 @@ namespace TopdownShooter.Pathfinders
 			{
 				if (CanMoveStraight(point, (StraightMove)i))
 				{
-					Node.Index nextIndex = point + straightMoveDir[i];
+					Index nextIndex = point + straightMoveDir[i];
 					Node visitNode = Map.Instance[nextIndex].GetClone();
 					int g = visitNode.Parent != null ? visitNode.Parent.Start2CurrentValue + _straightCost : _straightCost;
 					visitNode.Start2CurrentValue = g;
@@ -179,9 +119,9 @@ namespace TopdownShooter.Pathfinders
 		}
 
 		/// <summary>
-		/// 대각 이동 거리 계산
+		/// 두 노드의 직선 거리를 반환합니다.
 		/// </summary>
-		private int CalculationManhattanDistance(Node.Index a, Node.Index b)
+		private int CalculationManhattanDistance(Index a, Index b)
 		{
 			int x = Mathf.Abs((a.x - b.x)) * 10;
 			int y = Mathf.Abs((a.y - b.y)) * 10;
@@ -190,5 +130,6 @@ namespace TopdownShooter.Pathfinders
 
 			return (int)Mathf.Sqrt(powX + powY);
 		}
+		#endregion
 	}
 }
