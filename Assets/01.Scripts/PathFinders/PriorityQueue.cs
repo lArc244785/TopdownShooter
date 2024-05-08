@@ -13,10 +13,7 @@ namespace TopdownShooter.Pathfinders
 		/// <summary>
 		/// 우선 순위 큐에 들어있는 데이터의 갯수입니다.
 		/// </summary>
-		public int Count
-		{
-			get { return heap.Count; }
-		}
+		public int Count => _heap.Count;
 		#endregion
 
 
@@ -24,7 +21,7 @@ namespace TopdownShooter.Pathfinders
 		/// <summary>
 		/// 들어온 데이터를 저장하는 공간입니다.
 		/// </summary>
-		private List<T> heap = new List<T>();
+		private List<T> _heap = new List<T>();
 		#endregion
 
 
@@ -34,18 +31,22 @@ namespace TopdownShooter.Pathfinders
 		/// </summary>
 		public void Enqueue(T item)
 		{
-			heap.Add(item);
-			int currentIndex = heap.Count - 1;
-
-			while (currentIndex > 0)
+			_heap.Add(item);
+			//자식의 현재 위치
+			int childIndex = _heap.Count - 1;
+			while (childIndex > 0)
 			{
-				int parentIndex = (currentIndex - 1) / 2;
-
-				if (heap[currentIndex].CompareTo(heap[parentIndex]) >= 0)
+				//부모의 위치
+				int parentIndex = (childIndex - 1) / 2;
+				//부모와 자식의 관계가 옳게 된 경우 Break
+				if (_heap[childIndex].CompareTo(_heap[parentIndex]) >= 0)
+				{
 					break;
-
-				Swap(currentIndex, parentIndex);
-				currentIndex = parentIndex;
+				}
+				//아닌 경우는 스왑을 진행한다.
+				Swap(childIndex, parentIndex);
+				//위 레벨로 진행
+				childIndex = parentIndex;
 			}
 		}
 
@@ -54,37 +55,43 @@ namespace TopdownShooter.Pathfinders
 		/// </summary>
 		public T Dequeue()
 		{
-			if (heap.Count == 0)
+			if (_heap.Count == 0)
 				throw new Exception("Queue is empty");
 
-			T frontItem = heap[0];
-			int lastIndex = heap.Count - 1;
-			heap[0] = heap[lastIndex];
-			heap.RemoveAt(lastIndex);
+			int lastIndex = _heap.Count - 1;
+			T frontItem = _heap[0];
+			_heap[0] = _heap[lastIndex];
+			_heap.RemoveAt(lastIndex);
 
-			int currentIndex = 0;
-
+			--lastIndex;
+			int parentIndex = 0;
+			//가장 앞의 값을 최대값을 만든다.
 			while (true)
 			{
-				int leftChildIndex = currentIndex * 2 + 1;
-				int rightChildIndex = currentIndex * 2 + 2;
-
-				if (leftChildIndex >= lastIndex)
+				int childIndex = parentIndex * 2 + 1;
+				//자식 인덱스 존재하지 않는 경우 Break
+				if (childIndex > lastIndex)
+				{
 					break;
-
-				int minIndex = leftChildIndex;
-
-				if (rightChildIndex < lastIndex && heap[rightChildIndex].CompareTo(heap[leftChildIndex]) < 0)
-					minIndex = rightChildIndex;
-
-				if (heap[currentIndex].CompareTo(heap[minIndex]) <= 0)
+				}
+				int rightChild = childIndex + 1;
+				//오른쪽 자식이 존재하고 해당 자식이 현재의 자식의 값보다 큰경우 자식 인덱스를 변경해준다.
+				if (rightChild <= lastIndex && _heap[rightChild].CompareTo(_heap[childIndex]) < 0)
+				{
+					childIndex = rightChild;
+				}
+				//부모와 자식을 비교하였을 때 부모가 자식보다 크거나 같으면 Break
+				if (_heap[parentIndex].CompareTo(_heap[childIndex]) <= 0)
+				{
 					break;
-
-				Swap(currentIndex, minIndex);
-				currentIndex = minIndex;
+				}
+				//스왑
+				Swap(parentIndex, childIndex);
+				//아래 레벨로 진행
+				parentIndex = childIndex;
 			}
-
 			return frontItem;
+
 		}
 
 		/// <summary>
@@ -92,9 +99,26 @@ namespace TopdownShooter.Pathfinders
 		/// </summary>
 		private void Swap(int i, int j)
 		{
-			T temp = heap[i];
-			heap[i] = heap[j];
-			heap[j] = temp;
+			T temp = _heap[i];
+			_heap[i] = _heap[j];
+			_heap[j] = temp;
+		}
+		
+		/// <summary>
+		/// 가장 앞에 있는 데이터를 반환한다.
+		/// </summary>
+		public T Peek()
+		{
+			T frontItem = _heap[0];
+			return frontItem;
+		}
+
+		/// <summary>
+		/// 우선순위 큐가 비었는지 확인한다.
+		/// </summary>
+		public bool IsEmpty()
+		{
+			return Count == 0;
 		}
 		#endregion
 	}
